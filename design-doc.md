@@ -1,4 +1,4 @@
-# TITULO DEL DESIGN DOC
+# REACT-LEAFLET-MAPA-RED-GEODESICA
 Link: [Link a este design doc](#)
 
 Author(s): Daniel Paredes Villalobos
@@ -28,53 +28,61 @@ Ultima actualización: 2024-07-10
 
 ## Objetivo
 
-- Migrar un proyecto de web map realizado en Leaflet a React-leafet, migrando todas sus funcionalidades, plugins, conexiones y diseño web.
+- Migrar un proyecto de web map realizado en Leaflet a React-leafet, migrando el 100% de sus funcionalidades, plugins, conexiones y diseño web.
 
-- Contar con un webmap realizado en base a un framework como ReactJS, con el fin de, en el futuro, analizar mejoras de funcionamiento aprovechando el manejo de estados de React.
--  Dado un curso sobre React-Leaflet realizado en Udemy, recuperar con un proyecto real lo aprendido, y volver a codificar el conocimiento olvidado.
+- Contar con un webmap realizado en base a un framework como ReactJS, con el fin de, en el futuro, analizar mejoras de funcionamiento aprovechando el manejo de sus estados.
 
+- Poner en práctica lo aprendido sobre react-leaflet.
 
-_Añade screenshots / mocks si lo ves necesario_
+- Evaluar, al final del proyecto, la continuidad de futuros mapas utilizando React.
+
 
 ## Goals
-- Goals
+- Implementar un banner en el header.
+- Conectarse a la data ubicada en un WFS.
+- Implementar 3 mapas bases.
+- Implementar un componente de markers (vértices)
+- Implementar un componente de control de capas.
+- Implementar un componente de popup, el cual despliegue valores de la capa en una tabla.
+- Implementar un botón en el popup que abra una monografía.
+- Implementar un botón para descargar la monografía.
+- Implementar un feature que encuentre el vértice más cercano.
+- Implementar un componente que busque y se acerque a un vértice.
+- Implementar un componente de geocoding para direcciones.
+
 ## Non-Goals
-- Non-Goals
+- Mejorar diseño original.
+- _Implementar al seleccionar una comuna, la posibilidad de descargar todas las monografìas (analizar)_
+- Optimizar capa consumida desde geoserver.
 
 ## Background
-_Cuál es el contexto de este proyecto?_
+- Como Sección, actualmente no disponemos con mapas web que puedan mostrar la información espacial que contamos, es por ello que me encuentro desarrollando distintos mapas web, con el fin de implementar una serie de mapas con funcionalidades y características específicas.
+- A raiz de las solicitudes de monografías realizadas por correos, se cree que el mapa de vértices geodésicos es uno de los más necesarios, ya que sería de gran ayuda para los profesionales externos, poniendo a disposición información vértices geodésicos para la vinculación de las labores topográficas y geodésicas de los distintos proyectos de pavimentación en la Región Metropolitana.
+-  Dado que actualmente estoy usando más React, he decidido aprovechar de implementar un proyecto de mapa web en React-Leaflet.
+- La data principal se consumirá desde un servidor de mapa (_geoserver_), el cual permite conectarse a la data mediante un servicio llamado _Web Feature Services_ (WFS) en tiempo real.
 
-_Incluye recursos, como otros design docs si es necesario_
-
-_No escribas acerca de tu diseño o requerimientos aquí_
-
-## Overview
-_Overview a alto nivel de tu propuesta_
-
-_Esta sección debería ser entendible por nuevos miembros de tu equipo que no están relacionados al proyecto_
-
-_Pon detalles en la siguiente sección_
+![leaflet](./src/images/design-doc/leaflet.png)
 
 ## Detailed Design
 _Usa diagramas donde veas necesario_
 
 _Herramientas como [Excalidraw](https://excalidraw.com) son buenos recursos para esto_
 
-_Cubre los cambios principales:_
+Los cambios principales:
 
- _- Cuales son las nuevas funciones que vas a escribir?_
- _- Porque necesitas nuevos componentes?_
- _- Hay código que puede ser reusable?_
+- Se utilizará para el diseño (IU) la librería de React [ant desing](https://ant.design/)
+- Se deberá programar nuevamente el popup para implementar librería de diseñó.
+- Crear componentes para la capa principal de data, control layer, popup, monografía, controles de búsqueda (vértices y calles).
+- Nuevos plugins que funcionen en React: geocoding, busqueda y zoom a capa, esto se buscarán en [npm](https://www.npmjs.com) 
 
-_No elabores minuciosamente la implementación._
+ Código que puede ser reusable?:
+ - Se reutilizarán las funciones de buscar vértice más cercano, fetch para conectar con data en *WFS*.
+ - Se reutilizarán los mapas bases (3).
+ - Código relativo a los archivos de monografía, se consumirá y descargará de la misma manera que en leaflet.
+
+
 
 ## Solution 1
-### Frontend
-_Frontend…_
-### Backend
-_Backend…_
-
-## Solution 2
 ### Frontend
 _Frontend…_
 ### Backend
