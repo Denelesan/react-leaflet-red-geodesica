@@ -1,30 +1,29 @@
 # DESIGN DOC TO MAKE A WEB MAP IN REACT-LEAFLET
-Link: [Link a este design doc](#)
+Link: [Link a este design doc](https://github.com/Denelesan/react-leaflet-red-geodesica/blob/340e319fb176616d925a00b8c7f859d8f726bce4/design-doc.md)
 
 Author(s): Daniel Paredes Villalobos
 
-Status: [~~Draft~~, Ready for review, In Review, Reviewed]
+Status: [Draft, Ready for review, ~~In Review~~, Reviewed]
 
-Ultima actualización: 2024-07-10
+Ultima actualización: 2024-07-13
 
 ## Contenido
+- Objetivo
 - Goals
 - Non-Goals
 - Background
-- Overview
 - Detailed Design
-  - Solucion 1
-    - Frontend
-    - Backend
-  - Solucion 2
-    - Frontend
-    - Backend
+- Solución de Migración Web Map en React-leaflet
 - Consideraciones
 - Métricas
 
 ## Links
-- [Un link](#)
-- [Otro link](#)
+- [Repost en GitHub de WebMap en Leaflet](https://github.com/Denelesan/red-geodesica-map-project)
+- [Documentación React Dev](https://react.dev/learn/)
+- [Documentación Paquete NPM Plugin Geocoder](https://www.npmjs.com/package/leaflet-control-geocoder)
+- [Docucmentación Paquete NPM Proj4](https://www.npmjs.com/package/proj4)
+- [Documentación Paquete NPM Leaflet Search](hhttps://www.npmjs.com/package/leaflet-search)
+- [Ant Design](https://ant.design/components/overview/)
 
 ## Objetivo
 
@@ -55,6 +54,7 @@ Ultima actualización: 2024-07-10
 ## Background
 - Como equipo, actualmente no disponemos con mapas web que puedan mostrar la información espacial que contamos, es por ello que me encuentro desarrollando distintos mapas web, con el fin de implementar una serie de mapas con funcionalidades y características específicas.
 - A raiz de las solicitudes de monografías realizadas por correos, se cree que el mapa de vértices geodésicos es uno de los más necesarios, ya que sería de gran ayuda para los profesionales externos, poniendo a disposición información vértices geodésicos para la vinculación de las labores topográficas y geodésicas de los distintos proyectos de pavimentación en la Región Metropolitana.
+- Hace algunos meses, cree un webmap sólo utilizando Leflet y JavaScript,el cual abarcaba todas las funcionalidades requeridas, si bien, este no fue publicado, si fue probado en el servidor web, funcionando sin problemas. 
 -  Dado que actualmente estoy usando más React, he decidido aprovechar de implementar un proyecto de mapa web en React-Leaflet.
 - La data principal se consume desde un servidor de mapa (_geoserver_), el cual permite conectarse a la data mediante un servicio llamado _Web Feature Services_ (WFS) en tiempo real.
 
@@ -130,29 +130,11 @@ Se reciclará la misma función utilizada en Leaflet. Analizar mejor o inclusió
         markerVertexLocationFound.addTo(map)
         markerVertexLocationFound.bindTooltip(textLocationFound,{ permanent: true, className: "map-label", offset: [20, 0] }).openTooltip()
         vertexLocationFound.addTo(map)
-        //rutaMasCercana( puntoMasCercano.latlng,coord)
         map.flyTo(puntoMasCercano.latlng, 17)
 
     }
   
-    function rutaMasCercana (ubicacionProyecto, verticeMasCercano){
-        L.Routing.control({
-            waypoints: [
-                ubicacionProyecto,
-                verticeMasCercano
-            ],
-            routeWhileDragging: true,
-            showAlternatives: true,
-            altLineOptions: {
-                      styles: [
-                            {color: 'black', opacity: 0.2, weight: 9},
-                            {color: 'white', opacity: 0.8, weight: 6},
-                            {color: 'blue', opacity: 0.5, weight: 2}
-    ]
-                      },
-          }).addTo(map);
 
-    }
 ```
 ### Plugins
 #### Buscador de elemento en capa
@@ -161,7 +143,7 @@ Existe un plugin en npm para instalar, es el mismo utilizado en leaflet [*Leafle
 npm i leaflet-search
 ```
 #### Buscador de direcciones
-Se utilizará el plugin [*leaflet-control-geocoder*](https://www.npmjs.com/package/leaflet-control-geocoder), también al parecer que es la misma librería.
+Se utilizará el plugin [*leaflet-control-geocoder*](https://www.npmjs.com/package/leaflet-control-geocoder), también es la misma librería.
 ```
 npm i leaflet-control-geocoder
 ``` 
@@ -169,7 +151,13 @@ npm i leaflet-control-geocoder
 ####
 
 ## Consideraciones
-_Preocupaciones / trade-offs / tech debt_
+- Asegurarse de que la carga inicial del mapa no sea demasiado lenta al migrar a React.
+- Verificar que la interactividad del mapa (zoom, pan, popups) sea tan fluida como en la implementación original en Leaflet.
+- Crear la documentación del proyecto para reflejar los cambios realizados durante la migración, asegurando que otros desarrolladores puedan entender y trabajar con el nuevo código.
 
 ## Métricas
-_Que información necesitas para validar antes de lanzar este feature?_
+- Carga de los 3 basemaps elegidos.
+- Tiempo de respuesta del servidor WFS.
+- Uso de memoria de la aplicación.
+
+
