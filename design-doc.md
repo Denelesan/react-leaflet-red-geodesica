@@ -1,7 +1,7 @@
-# DESIGN DOC TO MAKE A WEB MAP IN REACT-LEAFLET
-Link: [Link a este design doc](https://github.com/Denelesan/react-leaflet-red-geodesica/blob/340e319fb176616d925a00b8c7f859d8f726bce4/design-doc.md)
+# DESIGN DOC FOR WEBMAP IN REACT-LEAFLET
+Link: [Link a este design doc](https://github.com/Denelesan/react-leaflet-red-geodesica/blob/master/design-doc.md)
 
-Author(s): Daniel Paredes Villalobos
+Author(s): Daniel Paredes Villalobos 
 
 Status: [Draft, Ready for review, ~~In Review~~, Reviewed]
 
