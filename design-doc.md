@@ -63,14 +63,14 @@ Ultima actualización: 2024-07-13
 ## Detailed Design
 
 En la vista 1, se puede ver la estructura principal del web map.
-![Alt text](image.png)
+![Alt text](/src/images/design-doc/image.png)
 
 
 En la vista 2, se detalla la vista con el popup correspondiente, cuyo interior va un botón que permitirá abrir la monografía del vértice
-![Alt text](image-1.png)
+![Alt text](/src/images/design-doc/image-1.png)
 
 En la vista 3, se detalla la monografía del vértice seleccionado al costado derecho. En su interior, un botón para descargar la imagen de la monografía.
-![Alt text](image-2.png)
+![Alt text](./src/images/design-doc/image-2.png)
 
 Los cambios principales:
 
