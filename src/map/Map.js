@@ -1,7 +1,26 @@
 import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 
-const Map = ()=>{
+//Components
+import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 
+//Data
+
+
+//Funciones
+import { fetchWFSData } from "../utils/functions/all-functions";
+
+
+const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
+                                'service=wfs&' +
+                                'version=2.0.0&' +
+                                'request=GetFeature&' +
+                                'typeNames=serviu:vw_vertices_geodesicos_vigentes&' +                            
+                                'outputFormat=application%2Fjson'
+
+
+
+const Map = ()=>{
+    const wfsData = fetchWFSData(urlWFSRedGeodesica)    
     return (
         <MapContainer zoom={10} center={[-33.45, -70.65]}>
             <LayersControl>
@@ -24,9 +43,10 @@ const Map = ()=>{
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     
                     />
-                </LayersControl.BaseLayer>            
-                         
-                </LayersControl>         
+                </LayersControl.BaseLayer>   
+            <GeodeticMarkerLayer wfsData={wfsData}/>         
+            </LayersControl>    
+            
            
         </MapContainer>
     )
