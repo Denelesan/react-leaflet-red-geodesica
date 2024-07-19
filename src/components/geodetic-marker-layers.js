@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { LayerGroup, LayersControl, Marker } from "react-leaflet";
+import { LayerGroup, LayersControl, Marker, Popup } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
+import { Card } from "antd";
 
 
 const WGS84UTM = "EPSG:32719"
@@ -10,6 +11,21 @@ const WGS84GEO="EPSG:4326"
 proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs")
 proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
 proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
+
+const PopupMarker = ({feature})=>{
+
+    const {nombre} = feature.properties
+    return (
+        <>
+        
+        <Card title="PRXX">
+
+
+
+        </Card>
+        </>
+    )
+}
 
 
 const GeodeticMarkerLayer = ({wfsData})=>{
@@ -39,6 +55,9 @@ const GeodeticMarkerLayer = ({wfsData})=>{
                 position={[reProjCoordinates[1], reProjCoordinates[0]]}
                 icon={defaultIcon}
                 >
+                    <Popup>
+                       <PopupMarker feature={feature}></PopupMarker>
+                    </Popup>
                 </Marker>
         
                 )
