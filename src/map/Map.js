@@ -16,8 +16,7 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
                                 'request=GetFeature&' +
                                 'typeNames=serviu:vw_vertices_geodesicos_vigentes&' +                            
                                 'outputFormat=application%2Fjson'
-
-
+   
 
 const Map = ()=>{
     const wfsData = fetchWFSData(urlWFSRedGeodesica)    

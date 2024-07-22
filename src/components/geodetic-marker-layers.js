@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LayerGroup, LayersControl, Marker, Popup } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
-import { Card } from "antd";
+import { Card, Table } from "antd";
 
 
 const WGS84UTM = "EPSG:32719"
@@ -13,17 +13,23 @@ proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +t
 proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 const PopupMarker = ({feature})=>{
+    const [columns, setColumns] = useState([{
+        title: "Id",
+        dataIndex: "nombre:punto",
+        key:"id"
+    }])
+    const [dataSource, setDataSource] = useState([])
 
-    const {nombre} = feature.properties
+    console.log(feature)
+    
     return (
-        <>
-        
-        <Card title="PRXX">
+        <div>
+            
+                <Table columns={columns} dataSource={dataSource}>
 
-
-
-        </Card>
-        </>
+                </Table>
+            
+        </div>
     )
 }
 
