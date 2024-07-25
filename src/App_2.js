@@ -24,6 +24,7 @@ function App() {
         cols.push(col)
       }
       setColumns(cols)
+      console.log(result.comments)
       setDataSource(result.comments)
     });
 

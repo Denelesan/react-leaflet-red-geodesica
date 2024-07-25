@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LayerGroup, LayersControl, Marker, Popup } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
-import { Card, Table } from "antd";
+import { Button, Card, Result, Table } from "antd";
 
 
 const WGS84UTM = "EPSG:32719"
@@ -12,15 +12,47 @@ proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=
 proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
 proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
-const PopupMarker = ({feature})=>{
-    const [columns, setColumns] = useState([{
-        title: "Id",
-        dataIndex: "nombre:punto",
-        key:"id"
-    }])
-    const [dataSource, setDataSource] = useState([])
 
-    console.log(feature)
+const PopupMarker = ({feature})=>{
+    const [columns, setColumns] = useState([
+        {
+        title: "Propiedad",
+        dataIndex: "propiedad",
+        key:"prop"
+        },
+        {
+            title: "Valor",
+            dataIndex: "valor",
+            key:"valor"
+        },
+    ])
+    //const [dataSource, setDataSource] = useState([])
+    const prop = [{
+        propiedad:"propiedad",
+        valor:"valor"
+    },
+    {
+        valor:"valor"
+    }]
+
+    const simpleDataArray= prop.map(element=>{
+        return {
+            ...element
+        }
+        
+    })
+    
+
+    
+
+    console.log(feature.properties)
+    console.log(prop)
+    console.log(simpleDataArray)
+    //const dataSource = [feature.properties]
+    const dataSource = [simpleDataArray[0]]
+
+    
+
     
     return (
         <div>
@@ -28,6 +60,7 @@ const PopupMarker = ({feature})=>{
                 <Table columns={columns} dataSource={dataSource}>
 
                 </Table>
+                <Button>Monografía</Button>
             
         </div>
     )
