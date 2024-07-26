@@ -28,28 +28,37 @@ const PopupMarker = ({feature})=>{
     ])
     //const [dataSource, setDataSource] = useState([])
     const prop = [{
-        propiedad:"propiedad",
-        valor:"valor"
+        propiedad:"id_punto",
+        valor:"1394"
     },
     {
-        valor:"valor"
-    }]
-
-    const simpleDataArray= prop.map(element=>{
-        return {
-            ...element
-        }
-        
-    })
+        propiedad:"nombre_punto",
+        valor:"LCM"
+    }
+    ]
     
+    const newRows= []
+    const list = feature.properties
 
+    const keys = Object.keys(list)
     
-
-    console.log(feature.properties)
-    console.log(prop)
-    console.log(simpleDataArray)
+   
+    
+keys.forEach(elemento=>{
+    const row = {
+        propiedad:elemento,
+        valor:list[elemento]
+    }
+    newRows.push(row)
+    console.log(elemento + " tiene el valor de "+ list[elemento])
+})
+    
+    console.log(list)
+    console.log(keys)
+    console.log(newRows)
+    
     //const dataSource = [feature.properties]
-    const dataSource = [simpleDataArray[0]]
+    const dataSource = newRows
 
     
 
