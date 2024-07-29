@@ -4,7 +4,7 @@ import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 
 //Data
-
+import { red_geodesica_data } from "../data/red_geodesica_json5";
 
 //Funciones
 import { fetchWFSData } from "../utils/functions/all-functions";
@@ -19,7 +19,7 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
    
 
 const Map = ()=>{
-    const wfsData = fetchWFSData(urlWFSRedGeodesica)    
+    //const wfsData = fetchWFSData(urlWFSRedGeodesica)    
     return (
         <MapContainer zoom={10} center={[-33.45, -70.65]}>
             <LayersControl>
@@ -43,7 +43,7 @@ const Map = ()=>{
                     
                     />
                 </LayersControl.BaseLayer>   
-            <GeodeticMarkerLayer wfsData={wfsData}/>         
+            <GeodeticMarkerLayer wfsData={red_geodesica_data}/>         
             </LayersControl>    
             
            

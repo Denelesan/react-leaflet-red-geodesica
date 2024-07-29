@@ -5,6 +5,7 @@ import proj4 from "proj4";
 import { Button, Card, Result, Table } from "antd";
 
 
+
 const WGS84UTM = "EPSG:32719"
 const GEO = "EPSG:3857"
 const WGS84GEO="EPSG:4326"
@@ -18,7 +19,9 @@ const PopupMarker = ({feature})=>{
         {
         title: "Propiedad",
         dataIndex: "propiedad",
-        key:"prop"
+        key: "propiedad",
+        render: (text)=><b>{text}</b>
+        //rowScope: 'row'
         },
         {
             title: "Valor",
@@ -26,37 +29,39 @@ const PopupMarker = ({feature})=>{
             key:"valor"
         },
     ])
-    //const [dataSource, setDataSource] = useState([])
-    const prop = [{
-        propiedad:"id_punto",
-        valor:"1394"
-    },
-    {
-        propiedad:"nombre_punto",
-        valor:"LCM"
-    }
-    ]
-    
+   
     const newRows= []
     const list = feature.properties
-
-    const keys = Object.keys(list)
-    
-   
-    
-keys.forEach(elemento=>{
+    const attributesFilter = ["Nombre Vértice","Estado","Este","Norte","Cota NMM","Altura Elipsoidal","Altura Geoidal","Sistema de Referencia"]
+    const newNamesAttributes = {
+        "nombre_punto":"Nombre Vértice",
+        "estado": "Estado",
+        "este":"Este",
+        "norte": "Norte",
+        "cota_nmm": "Cota NMM",
+        "altura_elipsoidal": "Altura Elipsoidal",
+        "altura_geoidal": "Altura Geoidal",
+        "sistema_referencia": "Sistema de Referencia"
+    }
+    const listWithNewNamesAttributes= Object.entries(list).reduce((newObject,[clave,valor])=>{
+        const newName = newNamesAttributes[clave] || clave
+        newObject[newName] = valor;
+        return newObject
+      },{})
+    const keys = Object.keys(listWithNewNamesAttributes).filter(key=>attributesFilter.includes(key))
+      
+      keys.forEach(elemento=>{
     const row = {
-        propiedad:elemento,
-        valor:list[elemento]
+            propiedad:elemento,
+            valor:listWithNewNamesAttributes[elemento],
+            key:elemento
     }
     newRows.push(row)
-    console.log(elemento + " tiene el valor de "+ list[elemento])
+    
+    
+    //console.log(elemento + " tiene el valor de "+ list[elemento])
 })
-    
-    console.log(list)
-    console.log(keys)
-    console.log(newRows)
-    
+   
     //const dataSource = [feature.properties]
     const dataSource = newRows
 
@@ -66,10 +71,16 @@ keys.forEach(elemento=>{
     return (
         <div>
             
-                <Table columns={columns} dataSource={dataSource}>
+                <Table 
+                    pagination={false}
+                    size="small"
+                    columns={columns} 
+                    dataSource={dataSource}>
 
                 </Table>
-                <Button>Monografía</Button>
+                
+                <Button block type="primary">Monografía</Button>
+                
             
         </div>
     )
@@ -77,17 +88,18 @@ keys.forEach(elemento=>{
 
 
 const GeodeticMarkerLayer = ({wfsData})=>{
+    
     const [data, setData] = useState(null)
    
     //console.log(data)
     useEffect(()=>{
-        wfsData
-        .then(data=>{
+        setData(wfsData)//ESTO HAY QUE COMENTAR CUANDO SE RESUELVA EL GEOSERVER Y DESCOMENTAR LO DE ABAJO
+        /*.then(data=>{
             setData(data);
         })
         .catch(error =>{
             console.error("Error al traer WFS Data", error)
-        })
+        })*/
     },[wfsData])
         if (!data){
             return <div>...Loading</div>

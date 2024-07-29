@@ -17,6 +17,6 @@ export function fetchWFSData(url){
     .catch(function(error){
         
         console.log(error);
-        //throw error; 
+        throw error; 
     })
 }
