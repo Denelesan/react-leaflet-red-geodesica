@@ -79,7 +79,7 @@ const PopupMarker = ({feature})=>{
 
                 </Table>
                 
-                <Button block type="primary">Monografía</Button>
+                <Button  block type="primary">Monografía</Button>
                 
             
         </div>
