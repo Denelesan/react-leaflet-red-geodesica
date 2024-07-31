@@ -91,7 +91,6 @@ const GeodeticMarkerLayer = ({wfsData})=>{
     
     const [data, setData] = useState(null)
    
-    //console.log(data)
     useEffect(()=>{
         setData(wfsData)//ESTO HAY QUE COMENTAR CUANDO SE RESUELVA EL GEOSERVER Y DESCOMENTAR LO DE ABAJO
         /*.then(data=>{
@@ -108,6 +107,7 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         const layer = data.features.map((feature)=>{
             const {coordinates} = feature.geometry
             const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
+           
             
             return (
                 <Marker
