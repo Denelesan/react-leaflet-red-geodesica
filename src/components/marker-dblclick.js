@@ -9,9 +9,11 @@ import { Button } from "antd";
 
 
 
-const MarkerDblClick = ()=>{
-    
-    const [markerPosition, setMarkerPosition] = useState()
+const MarkerDblClick = ({isActive})=>{
+   
+    const [refReady, setRefReady] = useState(false);
+    let popupRef = useRef()
+    const [markerPosition, setMarkerPosition] = useState(null)
     const leafletMap = useMap()
     leafletMap.doubleClickZoom.disable()
 
@@ -20,7 +22,18 @@ const MarkerDblClick = ()=>{
     })
     leafletMap.on("click",(e)=>{
         setMarkerPosition(null)
+        setRefReady(false)
+        
     })
+
+    useEffect(()=>{
+        if (refReady && isActive && popupRef.current){
+            console.log("adentro")
+            //popupRef.openOn(leafletMap)
+           popupRef.current.openOn(leafletMap)
+        }
+        console.log(refReady, isActive,popupRef.current)
+    },[isActive, markerPosition,refReady,leafletMap])
     
     return markerPosition ? (
         //console.log(markerPosition)
@@ -28,11 +41,15 @@ const MarkerDblClick = ()=>{
         key={String(markerPosition.lat)}
         position={[markerPosition.lat, markerPosition.lng]}
         icon={blueIcon}
-    ><Popup>
+    ><Popup
+        ref={(r=>{
+            popupRef.current = r;            
+            setRefReady(true)
+        })}>
         <div>
          <Card type="inner" title="Nombre" >
         </Card>
-        <Button>Vértice más cercano</Button>
+        <Button type="primary">Vértice más cercano</Button>
         </div>
     </Popup>
    

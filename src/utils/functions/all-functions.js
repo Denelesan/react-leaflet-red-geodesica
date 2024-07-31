@@ -1,4 +1,4 @@
-
+import L from "leaflet"
 //Functión para gestionar la petición y la respuesta desde un servicio WFS
 
 export function fetchWFSData(url){
@@ -23,13 +23,13 @@ export function fetchWFSData(url){
 
 //Función para crear marker con evento de doble click en el mapa
 
-    
+    /*
     //var popupUbicacionProyecto 
     var markerDblClick;
     var markerData
     var coordinateGeographicDblClick 
 
-    export function createMarkerWithPopup(e){
+    function createMarkerWithPopup(e){
 
         // Crear el botón
         var button = document.createElement('button');
@@ -75,4 +75,4 @@ export function fetchWFSData(url){
         markerDblClick.addTo(map)
         markerDblClick.openPopup()
         
-                }
+                }*/

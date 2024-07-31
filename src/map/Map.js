@@ -8,6 +8,7 @@ import { red_geodesica_data } from "../data/red_geodesica_json5";
 
 //Funciones
 import { fetchWFSData } from "../utils/functions/all-functions";
+import { useState } from "react";
 
 
 const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
@@ -21,6 +22,7 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
 const Map = ()=>{
     //const wfsData = fetchWFSData(urlWFSRedGeodesica)  
    
+    
     
     return (
         <MapContainer zoom={10} center={[-33.45, -70.65]}>
@@ -47,7 +49,7 @@ const Map = ()=>{
                 </LayersControl.BaseLayer>   
             <GeodeticMarkerLayer wfsData={red_geodesica_data}/>         
             </LayersControl>    
-            <MarkerDblClick/>
+            <MarkerDblClick isActive/>
            
         </MapContainer>
     )
