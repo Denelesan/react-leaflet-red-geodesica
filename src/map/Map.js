@@ -49,7 +49,7 @@ const Map = ()=>{
                 </LayersControl.BaseLayer>   
             <GeodeticMarkerLayer wfsData={red_geodesica_data}/>         
             </LayersControl>    
-            <MarkerDblClick isActive/>
+            <MarkerDblClick isActive wfsData={red_geodesica_data}/>
            
         </MapContainer>
     )

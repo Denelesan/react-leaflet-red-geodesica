@@ -1,5 +1,14 @@
 import L from "leaflet"
+import GeometryUtil from "leaflet-geometryutil"
+import proj4 from "proj4"
 //Functión para gestionar la petición y la respuesta desde un servicio WFS
+
+const WGS84UTM = "EPSG:32719"
+const GEO = "EPSG:3857"
+const WGS84GEO="EPSG:4326"
+proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs")
+proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
+proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 export function fetchWFSData(url){
     return fetch(url,{
@@ -21,58 +30,41 @@ export function fetchWFSData(url){
     })
 }
 
-//Función para crear marker con evento de doble click en el mapa
-
-    /*
-    //var popupUbicacionProyecto 
-    var markerDblClick;
-    var markerData
-    var coordinateGeographicDblClick 
-
-    function createMarkerWithPopup(e){
-
-        // Crear el botón
-        var button = document.createElement('button');
-        button.id = "button-vertice-cercano";
-        button.className = "btn btn-primary";
-        button.type = "button";
-        button.textContent = "Vértice más cercano";
-
-        // Asignar el evento de clic al botón
-        button.addEventListener("click", handleButtonClick);
-       
-        if (markerDblClick ){
-            markerDblClick.off('popupopen'); // Eliminar el evento asociado al abrir el popup
-            markerDblClick.off('popupclose'); // Eliminar el evento asociado al cerrar el popup
-            markerDblClick.remove(); // Eliminar el marcador del mapa
-            markerDblClick = null; // Limpiar la referencia al marcador
-            
+// FUNCION DE VERTICE MAS CERCANO
+   //var puntoMasCercano
+   
+export function findNearestVertex(coord, map, data) {
+    const geoJsonLayer = L.geoJSON(data,{
+        pointToLayer: function(coords){
+            let coordinatesUTM = coords.geometry.coordinates
+            let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
+            let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
+            return L.marker(coordinatesGEO )
         }
-        
-        coordinateGeographicDblClick = e.latlng
-        markerData={
-            title:"Ubicación del Proyecto",
-            ubicacion: `<b>Lat:</b>${coordinateGeographicDblClick.lat} <b>Long:</b>${coordinateGeographicDblClick.lng}`
+    })
+    const layers = Object.values(geoJsonLayer._layers)
+    const coordObject = L.latLng(coord)
+    console.log(layers)
+    console.log(coordObject)
+    var puntoMasCercano = GeometryUtil.closestLayer(map, layers, coordObject)
+    console.log(puntoMasCercano, coord, map, data.features)
+    /*var vertexLocationFound;
+    var markerVertexLocationFound;
+        if(vertexLocationFound){
+            vertexLocationFound.remove()
+            markerVertexLocationFound.remove()
         }
-        var popupUbicacionProyecto = document.createElement('div');
-        popupUbicacionProyecto.innerHTML= `
-        <div>
-            
-            <div id="popupUbicacionProyecto">
-                <b>${markerData.title}</b>
-            </div>
-            <p>${markerData.ubicacion}</p>
-            
-            <div id="button-separator">
-            
-            </div>
-        </div>`;
-        popupUbicacionProyecto.querySelector('#button-separator').appendChild(button);
-         
+        var puntoMasCercano = L.GeometryUtil.closestLayer(map, data.getLayers(), coord)
+        vertexLocationFound = L.circle(puntoMasCercano.latlng, {radius:100})
+        console.log(puntoMasCercano)
+        markerVertexLocationFound = L.marker(puntoMasCercano.latlng,{icon:L.divIcon({className:'marker-transparent'})})
+        var textLocationFound = `<b>${puntoMasCercano.layer.feature.properties.nombre_punto}</b>`
         
-        markerDblClick = L.marker(coordinateGeographicDblClick)
-        markerDblClick.bindPopup(popupUbicacionProyecto)
-        markerDblClick.addTo(map)
-        markerDblClick.openPopup()
         
-                }*/
+        markerVertexLocationFound.addTo(map)
+        markerVertexLocationFound.bindTooltip(textLocationFound,{ permanent: true, className: "map-label", offset: [20, 0] }).openTooltip()
+        vertexLocationFound.addTo(map)
+        //rutaMasCercana( puntoMasCercano.latlng,coord)
+        map.flyTo(puntoMasCercano.latlng, 17)*/
+
+    }

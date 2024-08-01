@@ -71,7 +71,7 @@ const PopupMarker = ({feature})=>{
     return (
         <div>
             
-                <Table 
+                <Table style={{marginBottom:10}}
                     pagination={false}
                     size="small"
                     columns={columns} 
@@ -107,6 +107,7 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         const layer = data.features.map((feature)=>{
             const {coordinates} = feature.geometry
             const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
+            
            
             
             return (
