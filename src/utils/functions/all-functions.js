@@ -1,6 +1,7 @@
 import L from "leaflet"
 import GeometryUtil from "leaflet-geometryutil"
 import proj4 from "proj4"
+import { Circle } from "react-leaflet"
 //Functión para gestionar la petición y la respuesta desde un servicio WFS
 
 const WGS84UTM = "EPSG:32719"
@@ -34,6 +35,12 @@ export function fetchWFSData(url){
    //var puntoMasCercano
    
 export function findNearestVertex(coord, map, data) {
+    var circleElement = document.getElementsByTagName("path")
+   // circleElement = circleElement.querySelector("path")
+    //console.log(circleElement[0])
+    if (circleElement[0]){
+        circleElement[0].remove()
+    }
     const geoJsonLayer = L.geoJSON(data,{
         pointToLayer: function(coords){
             let coordinatesUTM = coords.geometry.coordinates
@@ -44,10 +51,17 @@ export function findNearestVertex(coord, map, data) {
     })
     const layers = Object.values(geoJsonLayer._layers)
     const coordObject = L.latLng(coord)
-    console.log(layers)
-    console.log(coordObject)
+    
     var puntoMasCercano = GeometryUtil.closestLayer(map, layers, coordObject)
-    console.log(puntoMasCercano, coord, map, data.features)
+    console.log(puntoMasCercano)
+    //var vertexLocationFound = L.circle(puntoMasCercano.latlng, {radius:100}).addTo(map)
+    //var vertexLocationFound = <Circle center={puntoMasCercano.latlng} radius={100} pathOptions={{fillColor:'blue'}} />
+   /* console.log(vertexLocationFound)
+    if (vertexLocationFound){
+        console.log(vertexLocationFound)
+       // vertexLocationFound.remove()
+    }
+    
     /*var vertexLocationFound;
     var markerVertexLocationFound;
         if(vertexLocationFound){
@@ -63,8 +77,9 @@ export function findNearestVertex(coord, map, data) {
         
         markerVertexLocationFound.addTo(map)
         markerVertexLocationFound.bindTooltip(textLocationFound,{ permanent: true, className: "map-label", offset: [20, 0] }).openTooltip()
-        vertexLocationFound.addTo(map)
-        //rutaMasCercana( puntoMasCercano.latlng,coord)
-        map.flyTo(puntoMasCercano.latlng, 17)*/
+        vertexLocationFound.addTo(map)*/
+        map.flyTo(puntoMasCercano.latlng, 17)
+
+        return puntoMasCercano
 
     }

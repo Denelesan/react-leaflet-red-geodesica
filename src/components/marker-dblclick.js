@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { Marker, LayerGroup, useMap, Popup} from "react-leaflet"
+import { useEffect, useState, useRef, isValidElement } from "react";
+import { Marker, LayerGroup, useMap, Popup, Circle} from "react-leaflet"
 import Card from "antd/es/card/Card";
 import blueIcon from "../icon/blueIcon";
 import L from "leaflet"
@@ -17,7 +17,9 @@ proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 
 const MarkerDblClick = ({isActive, wfsData})=>{
-   
+    const [nearestVertex, setNearestVertex] = useState(null)
+    
+    let findPoint;
     const [refReady, setRefReady] = useState(false);
     let popupRef = useRef()
     const [markerPosition, setMarkerPosition] = useState(null)
@@ -35,12 +37,16 @@ const MarkerDblClick = ({isActive, wfsData})=>{
         
     })
     
+    useEffect(()=>{
+        setNearestVertex(null)
+    },[markerPosition])
 
     useEffect(()=>{
         if (refReady && isActive && popupRef.current){
             //console.log("adentro")
             //popupRef.openOn(leafletMap)
-           popupRef.current.openOn(leafletMap)
+            
+            popupRef.current.openOn(leafletMap)
            
            
         }
@@ -56,7 +62,7 @@ const MarkerDblClick = ({isActive, wfsData})=>{
            //return markerPositionReproj
            
     }
-    //console.log(markerPositionReproj)
+    
     return markerPosition ? (
         
         <Marker
@@ -73,10 +79,18 @@ const MarkerDblClick = ({isActive, wfsData})=>{
             <p><b>Este:</b> {(markerPositionReproj[0].toFixed(3))} m</p>
             <p><b>Norte: </b>{(markerPositionReproj[1].toFixed(3))} m</p>
         </Card>
-        <Button block type="primary" onClick={()=>findNearestVertex(markerPositionArrays, leafletMap, wfsData)} >Vértice más cercano</Button>
+        <Button block type="primary" onClick={()=>{
+            findPoint = findNearestVertex(markerPositionArrays, leafletMap, wfsData)            
+            setNearestVertex(findPoint)
+            }} >Vértice más cercano</Button>
         </div>
     </Popup>
-   
+        {nearestVertex && (
+            <Circle 
+            center={nearestVertex.latlng}
+            radius={100}
+            pathOptions={{fillColor:'blue'}} />
+        )}
         </Marker>
         
     ) : null
