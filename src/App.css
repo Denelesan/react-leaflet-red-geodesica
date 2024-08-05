@@ -6,3 +6,7 @@
 .fit-bounds-control-container{
   display: grid;
 }
+
+.leaflet-tooltip{
+  border: 1px solid #f4f4f4;
+}

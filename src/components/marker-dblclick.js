@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, isValidElement } from "react";
-import { Marker, LayerGroup, useMap, Popup, Circle} from "react-leaflet"
+import { Marker, LayerGroup, useMap, Popup, Circle, Tooltip, CircleMarker} from "react-leaflet"
 import Card from "antd/es/card/Card";
 import blueIcon from "../icon/blueIcon";
 import L from "leaflet"
@@ -56,9 +56,9 @@ const MarkerDblClick = ({isActive, wfsData})=>{
     var markerPositionArrays=[]
     var markerPositionArraysOrder=[]
     if (markerPosition){
-            markerPositionArrays = Object.values(markerPosition)
-           markerPositionArraysOrder = [markerPositionArrays[1], markerPositionArrays[0]]
-           markerPositionReproj= proj4(WGS84GEO,WGS84UTM,markerPositionArraysOrder)
+        markerPositionArrays = Object.values(markerPosition)
+        markerPositionArraysOrder = [markerPositionArrays[1], markerPositionArrays[0]]
+        markerPositionReproj= proj4(WGS84GEO,WGS84UTM,markerPositionArraysOrder)
            //return markerPositionReproj
            
     }
@@ -80,16 +80,21 @@ const MarkerDblClick = ({isActive, wfsData})=>{
             <p><b>Norte: </b>{(markerPositionReproj[1].toFixed(3))} m</p>
         </Card>
         <Button block type="primary" onClick={()=>{
-            findPoint = findNearestVertex(markerPositionArrays, leafletMap, wfsData)            
+            findPoint = findNearestVertex(markerPositionArrays, leafletMap, wfsData)  
+            console.log("punto",findPoint)          
             setNearestVertex(findPoint)
             }} >Vértice más cercano</Button>
         </div>
     </Popup>
         {nearestVertex && (
-            <Circle 
+            <Circle
             center={nearestVertex.latlng}
             radius={100}
-            pathOptions={{fillColor:'blue'}} />
+            pathOptions={{fillColor:'blue'}} >
+                
+            </Circle>
+            
+            
         )}
         </Marker>
         

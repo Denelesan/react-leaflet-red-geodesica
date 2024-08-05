@@ -35,51 +35,27 @@ export function fetchWFSData(url){
    //var puntoMasCercano
    
 export function findNearestVertex(coord, map, data) {
-    var circleElement = document.getElementsByTagName("path")
+    /*var circleElement = document.getElementsByTagName("path")
    // circleElement = circleElement.querySelector("path")
     //console.log(circleElement[0])
     if (circleElement[0]){
         circleElement[0].remove()
-    }
-    const geoJsonLayer = L.geoJSON(data,{
-        pointToLayer: function(coords){
-            let coordinatesUTM = coords.geometry.coordinates
-            let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
-            let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
-            return L.marker(coordinatesGEO )
-        }
-    })
-    const layers = Object.values(geoJsonLayer._layers)
-    const coordObject = L.latLng(coord)
+    }*/
     
-    var puntoMasCercano = GeometryUtil.closestLayer(map, layers, coordObject)
-    console.log(puntoMasCercano)
-    //var vertexLocationFound = L.circle(puntoMasCercano.latlng, {radius:100}).addTo(map)
-    //var vertexLocationFound = <Circle center={puntoMasCercano.latlng} radius={100} pathOptions={{fillColor:'blue'}} />
-   /* console.log(vertexLocationFound)
-    if (vertexLocationFound){
-        console.log(vertexLocationFound)
-       // vertexLocationFound.remove()
-    }
-    
-    /*var vertexLocationFound;
-    var markerVertexLocationFound;
-        if(vertexLocationFound){
-            vertexLocationFound.remove()
-            markerVertexLocationFound.remove()
-        }
-        var puntoMasCercano = L.GeometryUtil.closestLayer(map, data.getLayers(), coord)
-        vertexLocationFound = L.circle(puntoMasCercano.latlng, {radius:100})
-        console.log(puntoMasCercano)
-        markerVertexLocationFound = L.marker(puntoMasCercano.latlng,{icon:L.divIcon({className:'marker-transparent'})})
-        var textLocationFound = `<b>${puntoMasCercano.layer.feature.properties.nombre_punto}</b>`
+        const geoJsonLayer = L.geoJSON(data,{
+            pointToLayer: function(coords){
+                let coordinatesUTM = coords.geometry.coordinates
+                let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
+                let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
+                return L.marker(coordinatesGEO )
+            }
+        })
+        const layers = Object.values(geoJsonLayer._layers)
+        const coordObject = L.latLng(coord)
         
-        
-        markerVertexLocationFound.addTo(map)
-        markerVertexLocationFound.bindTooltip(textLocationFound,{ permanent: true, className: "map-label", offset: [20, 0] }).openTooltip()
-        vertexLocationFound.addTo(map)*/
+        var puntoMasCercano = GeometryUtil.closestLayer(map, layers, coordObject)
         map.flyTo(puntoMasCercano.latlng, 17)
-
         return puntoMasCercano
-
+    
+    
     }

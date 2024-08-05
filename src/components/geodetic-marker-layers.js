@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LayerGroup, LayersControl, Marker, Popup } from "react-leaflet";
+import { LayerGroup, LayersControl, Marker, Popup, Tooltip, useMap } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
 import { Button, Card, Result, Table } from "antd";
@@ -76,24 +76,35 @@ const PopupMarker = ({feature})=>{
                     size="small"
                     columns={columns} 
                     dataSource={dataSource}>
-
                 </Table>
-                
                 <Button  block type="primary">Monografía</Button>
-                
-            
         </div>
     )
 }
 
 
 const GeodeticMarkerLayer = ({wfsData})=>{
+    const map = useMap()
     
+    const [zoom, setZoom] = useState(null)
     const [data, setData] = useState(null)
-   
+    map.on("zoom",(e)=>{
+        if (e.target._zoom > 13){
+            setZoom(true)
+        }else{
+            setZoom(null)
+        }
+    })
+    useEffect(()=>{
+        console.log(zoom)
+        
+        console.log(zoom)
+    },[map._zoom])
+
     useEffect(()=>{
         setData(wfsData)//ESTO HAY QUE COMENTAR CUANDO SE RESUELVA EL GEOSERVER Y DESCOMENTAR LO DE ABAJO
-        /*.then(data=>{
+        /*wfsData
+        .then(data=>{
             setData(data);
         })
         .catch(error =>{
@@ -103,19 +114,19 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         if (!data){
             return <div>...Loading</div>
         }
-       
+       console.log(data)
         const layer = data.features.map((feature)=>{
+            const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
             const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
-            
-           
             
             return (
                 <Marker
                 key={String(coordinates)} 
                 position={[reProjCoordinates[1], reProjCoordinates[0]]}
                 icon={defaultIcon}
-                >
+                >{zoom &&
+                (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
                     <Popup>
                        <PopupMarker feature={feature}></PopupMarker>
                     </Popup>

@@ -8,7 +8,7 @@ import { red_geodesica_data } from "../data/red_geodesica_json5";
 
 //Funciones
 import { fetchWFSData } from "../utils/functions/all-functions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
@@ -20,12 +20,21 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
    
 
 const Map = ()=>{
-    //const wfsData = fetchWFSData(urlWFSRedGeodesica)  
-   
+    const [wfsData, setWFSData] = useState(null) 
+    useEffect(()=>{
+        fetchWFSData(urlWFSRedGeodesica)
+        .then((resolvedData) =>{
+            setWFSData(resolvedData)
+        })
+        .catch(error=>{
+            console.error("Error al obtener datos", error)
+        })
+    },[])  
+    
     
     
     return (
-        <MapContainer zoom={10} center={[-33.45, -70.65]}>
+        <MapContainer zoom={10} center={[-33.45, -70.65]} minZoom={9}>
             <LayersControl>
                 <LayersControl.BaseLayer checked name="<b>Positron Map</b>">
                     <TileLayer
@@ -46,10 +55,18 @@ const Map = ()=>{
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     
                     />
-                </LayersControl.BaseLayer>   
-            <GeodeticMarkerLayer wfsData={red_geodesica_data}/>         
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="Smooth Dark Map">
+                    <TileLayer
+                    attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}?api_key=65bf92e4-95a1-4289-8179-c02b5ce4d6ff'
+                    authorization='Stadia-Auth 65bf92e4-95a1-4289-8179-c02b5ce4d6ff'
+                    ext='png'
+                    />
+                </LayersControl.BaseLayer>    
+            <GeodeticMarkerLayer wfsData={wfsData}/>         
             </LayersControl>    
-            <MarkerDblClick isActive wfsData={red_geodesica_data}/>
+            <MarkerDblClick isActive wfsData={wfsData} />
            
         </MapContainer>
     )
