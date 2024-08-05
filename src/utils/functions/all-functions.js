@@ -41,7 +41,7 @@ export function findNearestVertex(coord, map, data) {
     if (circleElement[0]){
         circleElement[0].remove()
     }*/
-    
+        console.log(data)
         const geoJsonLayer = L.geoJSON(data,{
             pointToLayer: function(coords){
                 let coordinatesUTM = coords.geometry.coordinates

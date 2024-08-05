@@ -2,7 +2,8 @@ import { LayersControl, MapContainer, TileLayer, useMap } from "react-leaflet";
 
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
-import MarkerDblClick from "../components/marker-dblclick"
+import MarkerDblClick from "../components/marker-dblclick";
+import SearchLayerControl from "../components/search-layer";
 //Data
 import { red_geodesica_data } from "../data/red_geodesica_json5";
 
@@ -63,10 +64,15 @@ const Map = ()=>{
                     authorization='Stadia-Auth 65bf92e4-95a1-4289-8179-c02b5ce4d6ff'
                     ext='png'
                     />
-                </LayersControl.BaseLayer>    
-            <GeodeticMarkerLayer wfsData={wfsData}/>         
+                </LayersControl.BaseLayer>   
+                
+            <GeodeticMarkerLayer wfsData={wfsData}/>  
+                 
             </LayersControl>    
             <MarkerDblClick isActive wfsData={wfsData} />
+            <SearchLayerControl wfsData={wfsData} /> 
+             
+            
            
         </MapContainer>
     )

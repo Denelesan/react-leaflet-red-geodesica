@@ -81,7 +81,7 @@ const MarkerDblClick = ({isActive, wfsData})=>{
         </Card>
         <Button block type="primary" onClick={()=>{
             findPoint = findNearestVertex(markerPositionArrays, leafletMap, wfsData)  
-            console.log("punto",findPoint)          
+                    
             setNearestVertex(findPoint)
             }} >Vértice más cercano</Button>
         </div>
