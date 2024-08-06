@@ -2,14 +2,8 @@ import "leaflet-search/src/leaflet-search";
 import L from "leaflet"
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import proj4 from "proj4"
 
-const WGS84UTM = "EPSG:32719"
-const GEO = "EPSG:3857"
-const WGS84GEO="EPSG:4326"
-proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs")
-proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
-proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
+
 
  // Definir un ícono completamente invisible
  const invisibleIcon = L.icon({
@@ -68,15 +62,16 @@ const SearchLayerControl =(data)=>{
 */
 const SearchLayerControl =(wfsData)=>{
     const map = useMap()
-    
+    console.log(wfsData)
     useEffect(()=>{
+        if (!map) return;
+
         if (wfsData.wfsData){
             let data = wfsData.wfsData
-
-            const dataLeaflet = L.geoJSON(data,{pointToLayer: function(coords){
-                let coordinatesUTM = coords.geometry.coordinates
-                let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
-                let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
+            console.log("searchdata",data)
+            const dataLeaflet = L.geoJSON(data,{pointToLayer: (coords)=>{
+                let coordinatesGEO = coords.geometry.coordinates                
+                coordinatesGEO = [coordinatesGEO[1], coordinatesGEO[0]]
                 return L.marker(coordinatesGEO,{icon:invisibleIcon} )
             }})
             console.log("dataleaflet",dataLeaflet)
@@ -91,6 +86,7 @@ const SearchLayerControl =(wfsData)=>{
             })
 
             map.addControl(controlSearch)
+            dataLeaflet.addTo(map);
 
             return ()=>{
                 map.removeControl(controlSearch)

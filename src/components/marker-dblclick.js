@@ -5,7 +5,7 @@ import blueIcon from "../icon/blueIcon";
 import L from "leaflet"
 import { Button } from "antd";
 import proj4 from "proj4";
-import { findNearestVertex } from "../utils/functions/all-functions";
+import { findNearestVertex, reProjCoordinatesValuesGeoToUTM } from "../utils/functions/all-functions";
 
 const WGS84UTM = "EPSG:32719"
 const GEO = "EPSG:3857"
@@ -55,10 +55,13 @@ const MarkerDblClick = ({isActive, wfsData})=>{
     var markerPositionReproj=[];
     var markerPositionArrays=[]
     var markerPositionArraysOrder=[]
+    var markerPositionUTM = [];
     if (markerPosition){
-        markerPositionArrays = Object.values(markerPosition)
-        markerPositionArraysOrder = [markerPositionArrays[1], markerPositionArrays[0]]
-        markerPositionReproj= proj4(WGS84GEO,WGS84UTM,markerPositionArraysOrder)
+        markerPositionArrays = Object.values(markerPosition)             
+        markerPositionUTM = reProjCoordinatesValuesGeoToUTM(markerPosition.lng, markerPosition.lat)
+        
+        //console.log("CoordenadasProj",reProjCoordinatesData(markerPosition))
+        //markerPositionReproj= proj4(WGS84GEO,WGS84UTM,markerPositionArraysOrder)
            //return markerPositionReproj
            
     }
@@ -76,8 +79,8 @@ const MarkerDblClick = ({isActive, wfsData})=>{
         })}>
         <div>
          <Card size="small" type="inner" title="Ubicación de Proyecto" style={{marginBottom:10, width:200}} >
-            <p><b>Este:</b> {(markerPositionReproj[0].toFixed(3))} m</p>
-            <p><b>Norte: </b>{(markerPositionReproj[1].toFixed(3))} m</p>
+            <p><b>Este:</b> {(markerPositionUTM[0].toFixed(3))} m</p>
+            <p><b>Norte: </b>{(markerPositionUTM[1].toFixed(3))} m</p>
         </Card>
         <Button block type="primary" onClick={()=>{
             findPoint = findNearestVertex(markerPositionArrays, leafletMap, wfsData)  

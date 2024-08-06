@@ -1,7 +1,6 @@
 import L from "leaflet"
 import GeometryUtil from "leaflet-geometryutil"
 import proj4 from "proj4"
-import { Circle } from "react-leaflet"
 //Functión para gestionar la petición y la respuesta desde un servicio WFS
 
 const WGS84UTM = "EPSG:32719"
@@ -30,25 +29,36 @@ export function fetchWFSData(url){
         throw error; 
     })
 }
+//Función para reproyectar coordenadas a un objeto
+export function reProjCoordinatesDataToGeo(data){
+    const layer = data.features.map((feature)=>{        
+        const {coordinates} = feature.geometry
+        const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
+        return {
+            ...feature,
+            geometry:{
+                ...feature.geometry,
+                coordinates:reProjCoordinates
+            }
+        }    
+       
+    })
+    return {...data,
+        features:layer}
+}
 
+//Función para reproyectar coordenadas sólo valores
+
+export function reProjCoordinatesValuesGeoToUTM(lng, lat){
+    let arrayCoordinates = [lng, lat]
+    return proj4(WGS84GEO,WGS84UTM, arrayCoordinates)
+}
 // FUNCION DE VERTICE MAS CERCANO
    //var puntoMasCercano
    
 export function findNearestVertex(coord, map, data) {
-    /*var circleElement = document.getElementsByTagName("path")
-   // circleElement = circleElement.querySelector("path")
-    //console.log(circleElement[0])
-    if (circleElement[0]){
-        circleElement[0].remove()
-    }*/
-        console.log(data)
+        console.log("data",data)
         const geoJsonLayer = L.geoJSON(data,{
-            pointToLayer: function(coords){
-                let coordinatesUTM = coords.geometry.coordinates
-                let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
-                let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
-                return L.marker(coordinatesGEO )
-            }
         })
         const layers = Object.values(geoJsonLayer._layers)
         const coordObject = L.latLng(coord)
