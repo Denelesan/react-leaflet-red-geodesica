@@ -79,7 +79,7 @@ const SearchLayerControl =(wfsData)=>{
                 let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
                 return L.marker(coordinatesGEO,{icon:invisibleIcon} )
             }})
-
+            console.log("dataleaflet",dataLeaflet)
             const controlSearch = new L.Control.Search({
                 position: "topleft",
                 textPlaceholder: "Busca un vértice Geodésico",

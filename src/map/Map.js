@@ -1,5 +1,5 @@
 import { LayersControl, MapContainer, TileLayer, useMap } from "react-leaflet";
-
+import proj4 from "proj4";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
@@ -19,13 +19,38 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
                                 'typeNames=serviu:vw_vertices_geodesicos_vigentes&' +                            
                                 'outputFormat=application%2Fjson'
    
+const WGS84UTM = "EPSG:32719"
+const GEO = "EPSG:3857"
+const WGS84GEO="EPSG:4326"
+proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs")
+proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
+proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 const Map = ()=>{
     const [wfsData, setWFSData] = useState(null) 
     useEffect(()=>{
         fetchWFSData(urlWFSRedGeodesica)
         .then((resolvedData) =>{
-            setWFSData(resolvedData)
+            //setWFSData(resolvedData)
+            const layer = resolvedData.features.map((feature)=>{
+                const name = feature.properties.nombre_punto
+                const {coordinates} = feature.geometry
+                const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
+                return {
+                    ...feature,
+                    geometry:{
+                        ...feature.geometry,
+                        coordinates:reProjCoordinates
+                    }
+                }    
+               
+            })
+            setWFSData({...resolvedData,
+                features:layer})
+            
+        })
+        .then((data)=>{
+            console.log(data)
         })
         .catch(error=>{
             console.error("Error al obtener datos", error)

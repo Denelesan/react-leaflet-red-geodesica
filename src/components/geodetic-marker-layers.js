@@ -95,11 +95,6 @@ const GeodeticMarkerLayer = ({wfsData})=>{
             setZoom(null)
         }
     })
-    useEffect(()=>{
-        console.log(zoom)
-        
-        console.log(zoom)
-    },[map._zoom])
 
     useEffect(()=>{
         setData(wfsData)//ESTO HAY QUE COMENTAR CUANDO SE RESUELVA EL GEOSERVER Y DESCOMENTAR LO DE ABAJO
@@ -111,6 +106,7 @@ const GeodeticMarkerLayer = ({wfsData})=>{
             console.error("Error al traer WFS Data", error)
         })*/
     },[wfsData])
+
         if (!data){
             return <div>...Loading</div>
         }
@@ -118,12 +114,12 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         const layer = data.features.map((feature)=>{
             const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
-            const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
+            //const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
             
             return (
                 <Marker
                 key={String(coordinates)} 
-                position={[reProjCoordinates[1], reProjCoordinates[0]]}
+                position={[coordinates[1], coordinates[0]]}
                 icon={defaultIcon}
                 >{zoom &&
                 (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
