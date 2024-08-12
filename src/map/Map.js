@@ -4,6 +4,7 @@ import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
 import SearchLayerControl from "../components/search-layer";
+import Scale from "../components/scale";
 //Data
 import { red_geodesica_data } from "../data/red_geodesica_json5";
 
@@ -73,6 +74,7 @@ const Map = ()=>{
             </LayersControl>    
             <MarkerDblClick isActive wfsData={wfsData} />
             <SearchLayerControl wfsData={wfsData} /> 
+            <Scale />
              
             
            
