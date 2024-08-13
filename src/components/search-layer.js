@@ -63,6 +63,7 @@ const SearchLayerControl =(data)=>{
 const SearchLayerControl =(wfsData)=>{
     const map = useMap()
     console.log(wfsData)
+    const [circle, setCircle] = useState(null)
     useEffect(()=>{
         if (!map) return;
 
@@ -81,12 +82,21 @@ const SearchLayerControl =(wfsData)=>{
                 layer: dataLeaflet,
                 propertyName: 'nombre_punto',
                 initial:false,
-                zoom:18,
-                marker:false
+                zoom:18,                
+                collapsed:false,
+                marker: false
+                
             })
 
-            map.addControl(controlSearch)
+            map.addControl(controlSearch)            
             dataLeaflet.addTo(map);
+
+            controlSearch.on('search:locationfound', (e)=>{
+                console.log(e)
+                if(circle){
+                    map.removeLayer(circle)
+                }
+            })
 
             return ()=>{
                 map.removeControl(controlSearch)
