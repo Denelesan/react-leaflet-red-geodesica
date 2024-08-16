@@ -103,7 +103,7 @@ const MarkerDblClick = ({isActive, wfsData})=>{
         
     ) : null
      //console.log(coordinates)
-        
+     
 }
 
 

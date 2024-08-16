@@ -65,6 +65,7 @@ export function findNearestVertex(coord, map, data) {
         
         var puntoMasCercano = GeometryUtil.closestLayer(map, layers, coordObject)
         map.flyTo(puntoMasCercano.latlng, 17)
+        console.log("puntomascercano",puntoMasCercano.latlng)
         return puntoMasCercano
     
     

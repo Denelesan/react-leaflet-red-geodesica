@@ -1,7 +1,8 @@
 import "leaflet-search/src/leaflet-search";
 import L from "leaflet"
-import { useMap } from "react-leaflet";
+import { Circle, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
+import { floatButtonPrefixCls } from "antd/es/float-button/FloatButton";
 
 
 
@@ -64,6 +65,14 @@ const SearchLayerControl =(wfsData)=>{
     const map = useMap()
     console.log(wfsData)
     const [circle, setCircle] = useState(null)
+    const [foundPosition, setFoundPosition] = useState(null)
+
+    map.on("click",(e)=>{
+        setFoundPosition(null)
+        
+        //setRefReady(false)
+        
+    })
     useEffect(()=>{
         if (!map) return;
 
@@ -92,12 +101,23 @@ const SearchLayerControl =(wfsData)=>{
             dataLeaflet.addTo(map);
 
             controlSearch.on('search:locationfound', (e)=>{
-                console.log(e)
-                if(circle){
-                    map.removeLayer(circle)
+                let lat = e.latlng.lat
+                let lng = e.latlng.lng
+                let coordinates = {lat, lng}
+                
+                setFoundPosition(coordinates)
+                if(foundPosition){
+                    setFoundPosition(null)
+                    setFoundPosition(coordinates)
                 }
+                else{
+                //setFoundPosition(coordinates)
+                console.log("locationFound",coordinates)
+                console.log("FoundPosition",foundPosition)
+                }
+                
             })
-
+            
             return ()=>{
                 map.removeControl(controlSearch)
             }
@@ -106,7 +126,14 @@ const SearchLayerControl =(wfsData)=>{
 
     },[map, wfsData]);
 
-    return null
+    return foundPosition ? <Circle
+    center={foundPosition}
+    radius={100}
+    pathOptions={{fillColor:'blue'}}
+    >
+</Circle>:null
 }
 
 export default SearchLayerControl
+/*
+*/
