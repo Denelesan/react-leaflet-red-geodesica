@@ -2,7 +2,7 @@ import "leaflet-search/src/leaflet-search";
 import L from "leaflet"
 import { Circle, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { floatButtonPrefixCls } from "antd/es/float-button/FloatButton";
+
 
 
 
@@ -14,53 +14,7 @@ import { floatButtonPrefixCls } from "antd/es/float-button/FloatButton";
     popupAnchor: [0, 0], // Ajusta el punto de anclaje del popup
     shadowSize: [0, 0], // Sin sombra
   });
-/*
-const SearchLayerControl =(data)=>{
 
-    const map = useMap()
-    const [layer, setLayer] = useState(null)
-    
-    useEffect(()=>{
-        console.log(data.data)
-        if (!map) return;
-        if (data && data.data){
-            let dataFormat = data.data
-            const dataLeaflet = L.geoJSON(dataFormat,{pointToLayer: function(coords){
-                let coordinatesUTM = coords.geometry.coordinates
-                let coordinatesGEOInverse = proj4(WGS84UTM, WGS84GEO, coordinatesUTM)
-                let coordinatesGEO = [coordinatesGEOInverse[1], coordinatesGEOInverse[0]]
-                return L.marker(coordinatesGEO )
-            }
-            
-        })
-        
-        console.log(dataLeaflet)
-        setLayer(dataLeaflet)
-
-        
-        const searchLayer = new  L.Control.Search({
-            position:'topleft',
-            textPlaceholder: "Busca un vértice Geodésico",
-            layer: dataLeaflet,
-            propertyName:"nombre_punto",
-            initial: false,
-            marker:false
-        }).addTo(map)
-
-        //layer.addTo(map)
-        
-        return ()=> {map.removeControl(searchLayer)
-                map.removeLayer(dataLeaflet)
-        }
-    }
-    },[map, data])
-
-    
-
-    return null;                
-       
-}
-*/
 const SearchLayerControl =(wfsData)=>{
     const map = useMap()
     console.log(wfsData)
@@ -78,7 +32,7 @@ const SearchLayerControl =(wfsData)=>{
 
         if (wfsData.wfsData){
             let data = wfsData.wfsData
-            console.log("searchdata",data)
+            //console.log("searchdata",data)
             const dataLeaflet = L.geoJSON(data,{pointToLayer: (coords)=>{
                 let coordinatesGEO = coords.geometry.coordinates                
                 coordinatesGEO = [coordinatesGEO[1], coordinatesGEO[0]]
@@ -104,16 +58,18 @@ const SearchLayerControl =(wfsData)=>{
                 let lat = e.latlng.lat
                 let lng = e.latlng.lng
                 let coordinates = {lat, lng}
-                
-                setFoundPosition(coordinates)
+               
+                //setFoundPosition(coordinates)
                 if(foundPosition){
                     setFoundPosition(null)
                     setFoundPosition(coordinates)
+                    
                 }
                 else{
-                //setFoundPosition(coordinates)
-                console.log("locationFound",coordinates)
+                setFoundPosition(coordinates)
+                /*console.log("locationFound",coordinates)
                 console.log("FoundPosition",foundPosition)
+                console.log("evento",e)*/
                 }
                 
             })
