@@ -27,18 +27,23 @@ const ControlGeocoder = ()=>{
             position:"topright",
             defaultMarkGeocode: false,
             collapsed: false
-        })
-
-        geocoder.on("markgeocode", (e)=>{
+        }).on("markgeocode", (e)=>{
             const resultPosition = e.geocode.center
-            setMarkerPositionResult(resultPosition)
-            console.log(e)
-            console.log(markerPositionResult)
-            const marker = L.marker(markerPositionResult, {
+            console.log("resultPosition", resultPosition)
+            
+            if (resultPosition){
+                setMarkerPositionResult("hola")
+                console.log("resultPosition", resultPosition)
+                console.log("MarkerPositionResult",markerPositionResult)
+                
+            }
+            map.setView(resultPosition, map.getZoom())
+            map.flyTo(resultPosition, 17)
+            const marker = L.marker(resultPosition, {
                 icon: new L.Icon.Default()
             }).addTo(map);
         })
-
+        
         map.addControl(geocoder)
         
 
