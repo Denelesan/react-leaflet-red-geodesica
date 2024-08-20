@@ -110,7 +110,7 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         if (!data){
             return <div>...Loading</div>
         }
-       console.log(data)
+       //console.log(data)
         const layer = data.features.map((feature)=>{
             const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
