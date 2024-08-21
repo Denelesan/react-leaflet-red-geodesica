@@ -63,10 +63,13 @@ const SearchLayerControl =(wfsData)=>{
                 if(foundPosition){
                     setFoundPosition(null)
                     setFoundPosition(coordinates)
+                   
                     
                 }
                 else{
                 setFoundPosition(coordinates)
+                map.removeControl(controlSearch)
+                map.addControl(controlSearch) 
                 /*console.log("locationFound",coordinates)
                 console.log("FoundPosition",foundPosition)
                 console.log("evento",e)*/
