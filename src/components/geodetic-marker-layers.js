@@ -36,16 +36,12 @@ const PopupMarker = ({feature})=>{
     const showModal = ()=>{
         setIsModalOpen(true)
     }
-    const handleOk = ()=>{
-        setIsModalOpen(false)
-    }
-    
-    const handleCancel = ()=>{
+    const hideModal = ()=>{
         console.log("cancel")
         setIsModalOpen(false)
     }
-    const getIsModalOpen = ()=> isModalOpen
-   
+    
+     
     const newRows= []
     const list = feature.properties
     const attributesFilter = ["Nombre Vértice","Estado","Este","Norte","Cota NMM","Altura Elipsoidal","Altura Geoidal","Sistema de Referencia"]
@@ -94,7 +90,7 @@ const PopupMarker = ({feature})=>{
                     dataSource={dataSource}>
                 </Table>
                 <Button  block type="primary" onClick={showModal}>Monografía</Button>
-                <MonografiaVertice getIsModalOpen={getIsModalOpen} setIsModalOpen={setIsModalOpen} handleOk={handleOk} handleCancel={handleCancel}/>
+                <MonografiaVertice nombrePunto={feature.properties.nombre_punto} visible={isModalOpen} hideModal={hideModal}/>
         </div>
     )
 }
