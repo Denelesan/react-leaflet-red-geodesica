@@ -45,7 +45,7 @@ const SearchLayerControl =(wfsData)=>{
                 layer: dataLeaflet,
                 propertyName: 'nombre_punto',
                 initial:false,
-                zoom:18,                
+                //zoom:18,                
                 collapsed:false,
                 marker: false
                 
@@ -63,11 +63,13 @@ const SearchLayerControl =(wfsData)=>{
                 if(foundPosition){
                     setFoundPosition(null)
                     setFoundPosition(coordinates)
+                    map.flyTo(coordinates, 17)
                    
                     
                 }
                 else{
                 setFoundPosition(coordinates)
+                map.flyTo(coordinates, 17)
                 map.removeControl(controlSearch)
                 map.addControl(controlSearch) 
                 /*console.log("locationFound",coordinates)

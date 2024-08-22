@@ -3,6 +3,7 @@ import { LayerGroup, LayersControl, Marker, Popup, Tooltip, useMap } from "react
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
 import { Button, Card, Result, Table } from "antd";
+import MonografiaVertice from "./monografia-vertice";
 
 
 
@@ -29,6 +30,21 @@ const PopupMarker = ({feature})=>{
             key:"valor"
         },
     ])
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const showModal = ()=>{
+        setIsModalOpen(true)
+    }
+    const handleOk = ()=>{
+        setIsModalOpen(false)
+    }
+    
+    const handleCancel = ()=>{
+        console.log("cancel")
+        setIsModalOpen(false)
+    }
+    const getIsModalOpen = ()=> isModalOpen
    
     const newRows= []
     const list = feature.properties
@@ -77,7 +93,8 @@ const PopupMarker = ({feature})=>{
                     columns={columns} 
                     dataSource={dataSource}>
                 </Table>
-                <Button  block type="primary">Monografía</Button>
+                <Button  block type="primary" onClick={showModal}>Monografía</Button>
+                <MonografiaVertice getIsModalOpen={getIsModalOpen} setIsModalOpen={setIsModalOpen} handleOk={handleOk} handleCancel={handleCancel}/>
         </div>
     )
 }
@@ -85,7 +102,6 @@ const PopupMarker = ({feature})=>{
 
 const GeodeticMarkerLayer = ({wfsData})=>{
     const map = useMap()
-    
     const [zoom, setZoom] = useState(null)
     const [data, setData] = useState(null)
     map.on("zoom",(e)=>{
@@ -110,7 +126,7 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         if (!data){
             return <div>...Loading</div>
         }
-       //console.log(data)
+       
         const layer = data.features.map((feature)=>{
             const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
