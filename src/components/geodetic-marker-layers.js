@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LayerGroup, LayersControl, Marker, Popup, Tooltip, useMap } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
-import { Button, Card, Result, Table } from "antd";
+import { Button, Card, Result, Table, Image } from "antd";
 import MonografiaVertice from "./monografia-vertice";
 
 
@@ -15,7 +15,7 @@ proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +t
 proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 
-const PopupMarker = ({feature})=>{
+const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     const [columns, setColumns] = useState([
         {
         title: "Propiedad",
@@ -32,12 +32,15 @@ const PopupMarker = ({feature})=>{
     ])
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+    
 
     const showModal = ()=>{
         setIsModalOpen(true)
+        isPopupVisible()
+        
     }
     const hideModal = ()=>{
-        console.log("cancel")
+        
         setIsModalOpen(false)
     }
     
@@ -100,6 +103,14 @@ const GeodeticMarkerLayer = ({wfsData})=>{
     const map = useMap()
     const [zoom, setZoom] = useState(null)
     const [data, setData] = useState(null)
+    const popupRef = useRef()
+
+    const isPopupVisible = ()=>{
+        if (popupRef.current){
+            popupRef.current._closeButton.click()
+        }
+    }
+
     map.on("zoom",(e)=>{
         if (e.target._zoom > 13){
             setZoom(true)
@@ -135,8 +146,8 @@ const GeodeticMarkerLayer = ({wfsData})=>{
                 icon={defaultIcon}
                 >{zoom &&
                 (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
-                    <Popup>
-                       <PopupMarker feature={feature}></PopupMarker>
+                    <Popup ref={popupRef}>
+                       <PopupMarker feature={feature} popupRef={popupRef} isPopupVisible={isPopupVisible}></PopupMarker>
                     </Popup>
                 </Marker>
         

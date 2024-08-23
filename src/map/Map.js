@@ -1,5 +1,5 @@
 import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
-
+import { Image } from "antd";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
@@ -73,11 +73,12 @@ const Map = ()=>{
             <GeodeticMarkerLayer wfsData={wfsData}/>  
                  
             </LayersControl>    
+            
             <MarkerDblClick isActive wfsData={wfsData} />
             <SearchLayerControl wfsData={wfsData} /> 
             <ControlGeocoder />
             <Scale />
-             
+            
             
            
         </MapContainer>
