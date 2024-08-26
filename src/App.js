@@ -8,6 +8,7 @@ import "leaflet-control-geocoder/dist/Control.Geocoder.css"
 
 function App() {
   return (
+    
     <Map/>
   );
 }

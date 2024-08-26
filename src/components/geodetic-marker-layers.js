@@ -4,6 +4,7 @@ import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
 import { Button, Card, Result, Table, Image } from "antd";
 import MonografiaVertice from "./monografia-vertice";
+import { isFocusable } from "@testing-library/user-event/dist/utils";
 
 
 
@@ -14,7 +15,18 @@ proj4.defs(GEO,"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=
 proj4.defs(WGS84UTM,"+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs");
 proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
+const isThereFile = (nombreVertice) =>{
+    return new Promise((resolve)=>{
+        let img = new window.Image()
+    img.src = `monografias/${nombreVertice}.jpg`
 
+    img.onload=()=> resolve(true)
+    img.onerror=()=> resolve(false)
+    }
+    
+    )
+    
+}
 const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     const [columns, setColumns] = useState([
         {
@@ -32,8 +44,16 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     ])
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    
+    const [imagenExiste, setImagenExiste] = useState(null)
+  
 
+    useEffect(()=>{
+        isThereFile(feature.properties.nombre_punto).then(result=>
+            setImagenExiste(result))
+            
+        
+    },[feature])
+    
     const showModal = ()=>{
         setIsModalOpen(true)
         isPopupVisible()
@@ -74,8 +94,11 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     newRows.push(row)
     
     
+    
     //console.log(elemento + " tiene el valor de "+ list[elemento])
 })
+
+
    
     //const dataSource = [feature.properties]
     const dataSource = newRows
@@ -86,13 +109,15 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     return (
         <div>
             
-                <Table style={{marginBottom:10}}
+                <Table 
                     pagination={false}
-                    size="small"
+                    size='small'
+                    style={{marginBottom:10
+                    }}
                     columns={columns} 
                     dataSource={dataSource}>
                 </Table>
-                <Button  block type="primary" onClick={showModal}>Monografía</Button>
+                {imagenExiste && <Button  block type="primary" onClick={showModal}>Monografía</Button>}
                 <MonografiaVertice nombrePunto={feature.properties.nombre_punto} visible={isModalOpen} hideModal={hideModal}/>
         </div>
     )

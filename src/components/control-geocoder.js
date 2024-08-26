@@ -28,7 +28,7 @@ const ControlGeocoder = ()=>{
 
         const geocoder = new L.Control.geocoder({
             placeholder:"Ingresa tu dirección",
-            position:"topright",
+            position:"topleft",
             defaultMarkGeocode: false,
             collapsed: false
         })

@@ -1,6 +1,8 @@
 .leaflet-container{
-  height: 100vh;
+  height: 88vh;
   width: 100vw;
+  
+  
 }
 
 .fit-bounds-control-container{

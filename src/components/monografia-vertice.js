@@ -27,18 +27,18 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
             ]}
             handleOk={showModal} 
             onCancel={hideModal}
-            height={"100%"}
+            //height={"100vh"}
             //width={"20%"}
             closable={false}
             style={{
-                padding:20
+                padding:0
             }}
             centered={true}
             >
             <Image
             preview={false}
-            height={"100%"}
-            //width="100%"
+            height="85vh"
+            width="100%"
             //src={isLoadImage? imagenPunto:fallbackImage}
             src={imagenPunto}
             fallback="https://static.vecteezy.com/system/resources/previews/004/726/030/non_2x/warning-upload-error-icon-with-cloud-vector.jpg"
