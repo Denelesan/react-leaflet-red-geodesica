@@ -4,6 +4,7 @@ import Modal from "antd/es/modal/Modal"
 
 import { useState } from "react"
 
+import { downloadImage } from "../utils/functions/all-functions"
 //const images = require.context("../images/monografias")
 const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
 
@@ -14,6 +15,7 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
     const imagenPunto = `monografias/${nombrePunto}.jpg`
     const fallbackImage = "https://static.vecteezy.com/system/resources/previews/004/726/030/non_2x/warning-upload-error-icon-with-cloud-vector.jpg"
 
+
     return (
         <>
         
@@ -21,7 +23,7 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
             //title={<h4>Monografía de: {nombrePunto}</h4>}
             open={visible} 
             footer={[isLoadImage?
-                <Button key={nombrePunto} block type="primary">
+                <Button key={nombrePunto} size="small" block type="primary" onClick={()=>downloadImage(imagenPunto, nombrePunto)}>
                     Descargar
                 </Button>:null
             ]}

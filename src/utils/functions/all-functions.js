@@ -70,3 +70,15 @@ export function findNearestVertex(coord, map, data) {
     
     
     }
+
+
+export function downloadImage (fileURL, fileName){
+    
+        
+        var link = document.createElement('a');
+        //console.log("fileName:"+fileName)
+        link.href = fileURL;
+        link.download = fileName;
+        //console.log("link:"+link);
+        link.click();
+}

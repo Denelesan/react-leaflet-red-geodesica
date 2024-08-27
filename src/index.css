@@ -42,8 +42,8 @@ code {
     monospace;
 }
 
-.custom-small-table .ant-table-small .ant-table-thead > tr > th,
-.custom-small-table .ant-table-small .ant-table-tbody > tr > td {
-    padding: 8px; /* Cambia el padding */
-    font-size: 12px; /* Cambia el tamaño de la fuente */
+/*Estilo tamaño Tabla de PopUp*/
+.ant-table-wrapper .ant-table.ant-table-small {
+    
+    font-size: 10px; /* Cambia el tamaño de la fuente */
 }
