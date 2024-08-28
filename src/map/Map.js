@@ -1,17 +1,21 @@
-import { LayersControl, MapContainer, TileLayer } from "react-leaflet";
+import { LayersControl, MapContainer, TileLayer, Control } from "react-leaflet";
 import { Image } from "antd";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
+
+//Control
 import SearchLayerControl from "../components/search-layer";
 import Scale from "../components/scale";
 import ControlGeocoder from "../components/control-geocoder";
+import { FitBoundToWorldControl } from "../components/control-home-view";
 //Data
 import { red_geodesica_data } from "../data/red_geodesica_json5";
 
 //Funciones
 import { fetchWFSData, reProjCoordinatesDataToGeo } from "../utils/functions/all-functions";
 import { useEffect, useState } from "react";
+
 
 
 const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
@@ -75,8 +79,12 @@ const Map = ()=>{
             </LayersControl>    
             
             <MarkerDblClick isActive wfsData={wfsData} />
+         
             <SearchLayerControl wfsData={wfsData} /> 
             <ControlGeocoder />
+            
+            <FitBoundToWorldControl />
+            
             <Scale />
             
             

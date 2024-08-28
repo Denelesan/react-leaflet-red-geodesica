@@ -78,7 +78,10 @@ export function downloadImage (fileURL, fileName){
         var link = document.createElement('a');
         //console.log("fileName:"+fileName)
         link.href = fileURL;
-        link.download = fileName;
+        link.download = fileName
         //console.log("link:"+link);
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
+      
 }
