@@ -3,6 +3,7 @@ import { Image } from "antd";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
+import { ComunasLayer } from "../components/comunas-layer";
 
 //Control
 import SearchLayerControl from "../components/search-layer";
@@ -11,6 +12,7 @@ import ControlGeocoder from "../components/control-geocoder";
 import { FitBoundToWorldControl } from "../components/control-home-view";
 //Data
 import { red_geodesica_data } from "../data/red_geodesica_json5";
+import { comunas } from "../data/Comunas";
 
 //Funciones
 import { fetchWFSData, reProjCoordinatesDataToGeo } from "../utils/functions/all-functions";
@@ -75,6 +77,7 @@ const Map = ()=>{
                 </LayersControl.BaseLayer>   
                 
             <GeodeticMarkerLayer wfsData={wfsData}/>  
+            <ComunasLayer data={comunas}/>
                  
             </LayersControl>    
             
