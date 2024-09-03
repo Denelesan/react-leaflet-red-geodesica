@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 const SearchLayerControl =(wfsData)=>{
     const map = useMap()
-    console.log(wfsData)
+    //console.log(wfsData)
     const [circle, setCircle] = useState(null)
     const [foundPosition, setFoundPosition] = useState(null)
 
@@ -38,7 +38,7 @@ const SearchLayerControl =(wfsData)=>{
                 coordinatesGEO = [coordinatesGEO[1], coordinatesGEO[0]]
                 return L.marker(coordinatesGEO,{icon:invisibleIcon} )
             }})
-            console.log("dataleaflet",dataLeaflet)
+            //console.log("dataleaflet",dataLeaflet)
             const controlSearch = new L.Control.Search({
                 position: "topleft",
                 textPlaceholder: "Busca un vértice Geodésico",

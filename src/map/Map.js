@@ -1,4 +1,4 @@
-import { LayersControl, MapContainer, TileLayer, Control } from "react-leaflet";
+import { LayersControl, MapContainer, TileLayer, Control, useMap } from "react-leaflet";
 import { Image } from "antd";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
@@ -29,6 +29,12 @@ const urlWFSRedGeodesica = 'http://163.247.53.138:443/geoserver/serviu/wfs?' +
    
 const Map = ()=>{
     const [wfsData, setWFSData] = useState(null) 
+    const [comunaFilter, setComunaFilter] = useState(null)
+    const getComunaFilter = ()=>comunaFilter
+    const [dataFilter, setDataFilter] = useState(null)
+    const getDataFilter = ()=>dataFilter
+    
+
     useEffect(()=>{
         fetchWFSData(urlWFSRedGeodesica)
         .then((resolvedData) =>{
@@ -76,8 +82,8 @@ const Map = ()=>{
                     />
                 </LayersControl.BaseLayer>   
                 
-            <GeodeticMarkerLayer wfsData={wfsData}/>  
-            <ComunasLayer data={comunas}/>
+            <GeodeticMarkerLayer wfsData={wfsData} getComunaFilter={getComunaFilter} setDataFilter={setDataFilter} />  
+            <ComunasLayer data={comunas} setComunaFilter={setComunaFilter} getComunaFilter={getComunaFilter} getDataFilter={getDataFilter} />
                  
             </LayersControl>    
             

@@ -5,6 +5,7 @@ import proj4 from "proj4";
 import { Button, Card, Result, Table, Image } from "antd";
 import MonografiaVertice from "./monografia-vertice";
 import { isFocusable } from "@testing-library/user-event/dist/utils";
+import BooleanPointInPolygon from "@turf/boolean-point-in-polygon"
 
 
 
@@ -124,12 +125,14 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
 }
 
 
-const GeodeticMarkerLayer = ({wfsData})=>{
+const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
     const map = useMap()
     const [zoom, setZoom] = useState(null)
     const [data, setData] = useState(null)
     const popupRef = useRef()
+    const comunaFilter = getComunaFilter()
 
+   
     const isPopupVisible = ()=>{
         if (popupRef.current){
             popupRef.current._closeButton.click()
@@ -154,21 +157,36 @@ const GeodeticMarkerLayer = ({wfsData})=>{
             console.error("Error al traer WFS Data", error)
         })*/
     },[wfsData])
+    
+    if (!data){
+        return <div>...Loading</div>
+    }
+              
 
-        if (!data){
-            return <div>...Loading</div>
-        }
-       
-        const layer = data.features.map((feature)=>{
+
+        const filterData = data.features.filter((currentFeature)=>{
+            let filterByGeo = true;
+            if(comunaFilter){
+                filterByGeo = BooleanPointInPolygon(currentFeature, comunaFilter)
+                
+            }
+
+            return filterByGeo
+        })
+        //setDataFilter(filterData)
+        const layer = filterData.map((feature)=>{
             const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
             //const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
             
             return (
+                
                 <Marker
                 key={String(coordinates)} 
                 position={[coordinates[1], coordinates[0]]}
                 icon={defaultIcon}
+                
+                
                 >{zoom &&
                 (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
                     <Popup ref={popupRef}>
@@ -180,12 +198,12 @@ const GeodeticMarkerLayer = ({wfsData})=>{
         
             }
             )        
-        
+            
     return (
-       <LayersControl.Overlay checked name="Red Geodésica">
+       <LayersControl.Overlay  checked name="Red Geodésica">
         <LayerGroup>{layer}</LayerGroup>
-       </LayersControl.Overlay>
-
+       </LayersControl.Overlay >
+    
     )
 }
 

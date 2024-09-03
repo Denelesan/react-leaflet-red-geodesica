@@ -18,24 +18,54 @@ proj4.defs(WGS84GEO,"+proj=longlat +datum=WGS84 +no_defs +type=crs");
 
 const MarkerDblClick = ({isActive, wfsData})=>{
     const [nearestVertex, setNearestVertex] = useState(null)
-    
+    const map = useMap()
     let findPoint;
     const [refReady, setRefReady] = useState(false);
     let popupRef = useRef()
     const [markerPosition, setMarkerPosition] = useState(null)
+    const [comunasActive, setComunasActive] = useState(false)
     const leafletMap = useMap()
-    leafletMap.doubleClickZoom.disable()
 
-    leafletMap.on("dblclick",(e)=>{
-        setMarkerPosition(e.latlng)
-        //const markerPositionReproj = proj4(WGS84GEO, WGS84UTM, markerPosition)
+    useEffect(()=>{
+        leafletMap.doubleClickZoom.disable()
+
+        const onOverlayAdd =  (event)=>{
+            console.log("overlayadd",event.name)
+            setComunasActive(true)
+        }
+
+        const onOverlayRemove = (event)=>{
+            console.log("overlayremove", event.name)
+            setComunasActive(false)
+        }
         
-    })
-    leafletMap.on("click",(e)=>{
-        setMarkerPosition(null)
-        setRefReady(false)
-        
-    })
+        const onDblClick = (e)=>{
+            console.log(comunasActive)
+            comunasActive? null : setMarkerPosition(e.latlng)
+                        
+        }
+
+        const onClick =(e)=>{
+            setMarkerPosition(null)
+            setRefReady(false)           
+        }
+
+        map.on("overlayadd", onOverlayAdd)
+        map.on("overlayremove", onOverlayRemove)
+        map.on("dblclick", onDblClick)
+        map.on("click", onClick)
+
+        return () => {
+            // Limpia los eventos al desmontar el componente
+            map.off("overlayadd", onOverlayAdd);
+            map.off("overlayremove", onOverlayRemove);
+            map.off("dblclick", onDblClick);
+            map.off("click", onClick);
+        };
+
+    }, [leafletMap, comunasActive])       
+    
+   
     
     useEffect(()=>{
         setNearestVertex(null)
@@ -51,10 +81,8 @@ const MarkerDblClick = ({isActive, wfsData})=>{
            
         }
         //console.log(refReady, isActive,popupRef.current)
-    },[isActive, markerPosition,refReady,leafletMap])
-    var markerPositionReproj=[];
-    var markerPositionArrays=[]
-    var markerPositionArraysOrder=[]
+    },[isActive, markerPosition,refReady,leafletMap])   
+    var markerPositionArrays=[]    
     var markerPositionUTM = [];
     if (markerPosition){
         markerPositionArrays = Object.values(markerPosition)             

@@ -57,7 +57,7 @@ export function reProjCoordinatesValuesGeoToUTM(lng, lat){
    //var puntoMasCercano
    
 export function findNearestVertex(coord, map, data) {
-        console.log("data",data)
+ 
         const geoJsonLayer = L.geoJSON(data,{
         })
         const layers = Object.values(geoJsonLayer._layers)
