@@ -7,6 +7,7 @@ import { LayersControl, GeoJSON, LayerGroup } from "react-leaflet"
 export const ComunasLayer = ({data, setComunaFilter, getComunaFilter, getDataFilter})=>{
     const dataFilter = getDataFilter()
     const comunaFilter = getComunaFilter()
+    console.log(dataFilter)
   
     const layer = <GeoJSON key={'geo-json-layer'}
     data={data}

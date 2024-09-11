@@ -31,8 +31,8 @@ const Map = ()=>{
     const [wfsData, setWFSData] = useState(null) 
     const [comunaFilter, setComunaFilter] = useState(null)
     const getComunaFilter = ()=>comunaFilter
-    const [dataFilter, setDataFilter] = useState(null)
-    const getDataFilter = ()=>dataFilter
+    const [dataFiltered, setDataFilter] = useState(null)
+    const getDataFilter = ()=>dataFiltered
     
 
     useEffect(()=>{

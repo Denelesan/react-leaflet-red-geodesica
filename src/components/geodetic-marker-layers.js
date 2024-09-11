@@ -131,6 +131,7 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
     const [data, setData] = useState(null)
     const popupRef = useRef()
     const comunaFilter = getComunaFilter()
+    const [changeData, setChangeData] = useState(false)
 
    
     const isPopupVisible = ()=>{
@@ -170,11 +171,17 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
                 filterByGeo = BooleanPointInPolygon(currentFeature, comunaFilter)
                 
             }
-
+            
             return filterByGeo
         })
-        //setDataFilter(filterData)
+        
+/*
+        useEffect(()=>{
+            console.log("Hola")
+        },[filterData])*/
+
         const layer = filterData.map((feature)=>{
+            
             const name = feature.properties.nombre_punto
             const {coordinates} = feature.geometry
             //const reProjCoordinates = proj4(WGS84UTM, WGS84GEO, coordinates)
