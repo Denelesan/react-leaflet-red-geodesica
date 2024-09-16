@@ -43,10 +43,16 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
             key:"valor"
         },
     ])
-
+    const map = useMap()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [imagenExiste, setImagenExiste] = useState(null)
-  
+    console.log(map._zoom)
+    let lat = feature.geometry.coordinates[1]
+    let lng =feature.geometry.coordinates[0]
+    let coordinatesZoom = {lat, lng}
+    let actualZoom = map._zoom
+    //map.flyTo(coordinatesZoom, actualZoom)
+     
 
     useEffect(()=>{
         isThereFile(feature.properties.nombre_punto).then(result=>
@@ -128,6 +134,7 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
 const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
     const map = useMap()
     const [zoom, setZoom] = useState(null)
+    const [zoomPopup, setZoomPopup] = useState(null)
     const [data, setData] = useState(null)
     const popupRef = useRef()
     const comunaFilter = getComunaFilter()
@@ -141,10 +148,15 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
     }
 
     map.on("zoom",(e)=>{
-        if (e.target._zoom > 13){
+        
+        if (e.target._zoom > 14){
             setZoom(true)
-        }else{
+        }else if(e.target._zoom > 10 && e.target._zoom < 15){
+            setZoomPopup(true)
             setZoom(null)
+        }else if(e.target._zoom < 14){
+            setZoom(null)
+            //setZoomPopup(null)
         }
     })
 
@@ -175,6 +187,8 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
         useEffect(()=>{
             if (filterData.length > 0){
                 setDataFilter(filterData)
+            }else{
+                setDataFilter(data)
             }
             
         },[filterData])
@@ -200,9 +214,10 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
                 
                 >{zoom &&
                 (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
-                    <Popup ref={popupRef}>
+                {zoomPopup &&
+                    <Popup offset={[-10, 25]}  >
                        <PopupMarker feature={feature} popupRef={popupRef} isPopupVisible={isPopupVisible}></PopupMarker>
-                    </Popup>
+                    </Popup>}
                 </Marker>
         
                 )

@@ -41,7 +41,10 @@ const MarkerDblClick = ({isActive, wfsData})=>{
         
         const onDblClick = (e)=>{
             console.log(comunasActive)
-            comunasActive? null : setMarkerPosition(e.latlng)
+            if (!comunasActive){
+                setMarkerPosition(e.latlng)
+            }
+            //comunasActive ? null : setMarkerPosition(e.latlng)
                         
         }
 

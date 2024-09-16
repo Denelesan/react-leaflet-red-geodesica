@@ -15,6 +15,7 @@ export const ComunasLayer = ({data, setComunaFilter, getComunaFilter, getDataFil
     eventHandlers={
         {click:(e)=>{
             //const dataFilter = getDataFilter()
+            
             setComunaFilter((prevState)=>{
                 const sameState = prevState === e.propagatedFrom.feature
                 return sameState ? null : e.propagatedFrom.feature

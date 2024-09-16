@@ -40,13 +40,13 @@ const SearchLayerControl =(wfsData)=>{
             }})
             //console.log("dataleaflet",dataLeaflet)
             const controlSearch = new L.Control.Search({
-                position: "topleft",
+                position: "topright",
                 textPlaceholder: "Busca un vértice Geodésico",
                 layer: dataLeaflet,
                 propertyName: 'nombre_punto',
                 initial:false,
                 //zoom:18,                
-                collapsed:false,
+                collapsed:true,
                 marker: false
                 
             })

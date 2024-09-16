@@ -58,7 +58,7 @@ const DownloadTotalMonografias = ({getComunaFilter,getDataFilter})=>{
         zIndex:'500',
         position:'absolute',
         right:'10px', 
-        top:'115px',
+        top:'155px',
         transition: "none"}
     const [style, setStyle] = useState(
         styleDefault
@@ -71,6 +71,7 @@ const DownloadTotalMonografias = ({getComunaFilter,getDataFilter})=>{
 
     useEffect(()=>{
         
+        //console.log(dataFiltered.length)
         if(comunaFilter && dataFiltered.length < 200){
             setDisableButton(false)
         }
@@ -92,7 +93,7 @@ const DownloadTotalMonografias = ({getComunaFilter,getDataFilter})=>{
                 zIndex:'500',
                 position:'absolute',
                 right:'10px', 
-                top:'215px',
+                top:'255px',
                 transition: "none"})
         })
         layersControlContainer.addEventListener("mouseleave", ()=>{
