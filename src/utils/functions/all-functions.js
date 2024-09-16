@@ -72,16 +72,78 @@ export function findNearestVertex(coord, map, data) {
     }
 
 
-export function downloadImage (fileURL, fileName){
+export async function downloadImage (fileURL, fileName){
     
+        try{
+            const response = await fetch (fileURL);
+            
+
+            if(!response.ok){
+                throw new Error("No se encontró la imagen")
+            }
         
-        var link = document.createElement('a');
+            
+        const contentType = response.headers.get('Content-Type')
+
+        if (!contentType || !contentType.startsWith('image/')){
+            throw new Error (`Tipo de contenido inesperado: ${contentType}`)
+        }
+
+        const blob = await response.blob()
+        const link = document.createElement('a');
         //console.log("fileName:"+fileName)
-        link.href = fileURL;
+        link.href = URL.createObjectURL(blob);
         link.download = fileName
         //console.log("link:"+link);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        return { success: true, message: `Imagen ${fileName} descargada correctamente.` };
+    }
+
+    catch (error){
+        console.error(error)
+
+        throw error
+    }
       
+}
+
+export async function blobImage (fileURL){
+    
+    try{
+        const response = await fetch (fileURL);
+        
+
+        if(!response.ok){
+            throw new Error("No se encontró la imagen")
+        }
+    
+        
+    const contentType = response.headers.get('Content-Type')
+
+    if (!contentType || !contentType.startsWith('image/')){
+        throw new Error (`Tipo de contenido inesperado: ${contentType}`)
+    }
+
+    const blob = await response.blob()
+
+    return blob;
+}
+
+catch (error){
+    console.error(error)
+
+    throw error
+}
+  
+}
+
+export function capitalizeWord (text){
+    return text.toLowerCase() //"Convertimos todas las palabras en mayúsculas"
+            .split(' ') //Separamos el texto en razón de los espacios
+            .map(word=>word.charAt(0).toUpperCase()+word.slice(1)) //Por cada palabra concatenamos, la selección de la primera letra transformada en mayúscula con el resto de la palabra.
+            .join(' ') //unimos nuevamente las palabras separadas por un espacio
+
 }

@@ -11,6 +11,7 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
     const [isLoadImage, setIsLoadImage] = useState(true)
     
     
+    
     //const imagenPunto = images(`./${nombrePunto}.jpg`)
     const imagenPunto = `monografias/${nombrePunto}.jpg`
     const fallbackImage = "https://static.vecteezy.com/system/resources/previews/004/726/030/non_2x/warning-upload-error-icon-with-cloud-vector.jpg"

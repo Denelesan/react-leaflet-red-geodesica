@@ -1,5 +1,5 @@
 import { LayersControl, MapContainer, TileLayer, Control, useMap } from "react-leaflet";
-import { Image } from "antd";
+import { Button, Image} from "antd";
 //Components
 import GeodeticMarkerLayer from "../components/geodetic-marker-layers";
 import MarkerDblClick from "../components/marker-dblclick";
@@ -10,6 +10,7 @@ import SearchLayerControl from "../components/search-layer";
 import Scale from "../components/scale";
 import ControlGeocoder from "../components/control-geocoder";
 import { FitBoundToWorldControl } from "../components/control-home-view";
+import DownloadTotalMonografias from "../components/download-total-monografias";
 //Data
 import { red_geodesica_data } from "../data/red_geodesica_json5";
 import { comunas } from "../data/Comunas";
@@ -33,6 +34,7 @@ const Map = ()=>{
     const getComunaFilter = ()=>comunaFilter
     const [dataFiltered, setDataFilter] = useState(null)
     const getDataFilter = ()=>dataFiltered
+    
     
 
     useEffect(()=>{
@@ -84,6 +86,7 @@ const Map = ()=>{
                 
             <GeodeticMarkerLayer wfsData={wfsData} getComunaFilter={getComunaFilter} setDataFilter={setDataFilter} />  
             <ComunasLayer data={comunas} setComunaFilter={setComunaFilter} getComunaFilter={getComunaFilter} getDataFilter={getDataFilter} />
+            
                  
             </LayersControl>    
             
@@ -93,9 +96,9 @@ const Map = ()=>{
             <ControlGeocoder />
             
             <FitBoundToWorldControl />
+            <DownloadTotalMonografias getDataFilter ={getDataFilter} getComunaFilter={getComunaFilter} />
             
             <Scale />
-            
             
            
         </MapContainer>

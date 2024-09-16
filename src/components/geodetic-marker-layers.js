@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LayerGroup, LayersControl, Marker, Popup, Tooltip, useMap } from "react-leaflet";
 import defaultIcon from "../icon/defaultIcon";
 import proj4 from "proj4";
@@ -131,7 +131,7 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
     const [data, setData] = useState(null)
     const popupRef = useRef()
     const comunaFilter = getComunaFilter()
-    const [changeData, setChangeData] = useState(false)
+    
 
    
     const isPopupVisible = ()=>{
@@ -158,27 +158,31 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
             console.error("Error al traer WFS Data", error)
         })*/
     },[wfsData])
-    
-    if (!data){
-        return <div>...Loading</div>
-    }
-              
 
-
-        const filterData = data.features.filter((currentFeature)=>{
-            let filterByGeo = true;
-            if(comunaFilter){
-                filterByGeo = BooleanPointInPolygon(currentFeature, comunaFilter)
+        const filterData = useMemo(()=>{
+            return data ? data.features.filter((currentFeature)=>{
+                let filterByGeo = true;
+                if(comunaFilter){
+                    filterByGeo = BooleanPointInPolygon(currentFeature, comunaFilter)
+                    
+                }
                 
+                return filterByGeo
+            }) : []
+        },[data, comunaFilter]) 
+        
+        
+        useEffect(()=>{
+            if (filterData.length > 0){
+                setDataFilter(filterData)
             }
             
-            return filterByGeo
-        })
-        
-/*
-        useEffect(()=>{
-            console.log("Hola")
-        },[filterData])*/
+        },[filterData])
+
+        if (!data){
+            return <div>...Loading</div>
+        }
+              
 
         const layer = filterData.map((feature)=>{
             
