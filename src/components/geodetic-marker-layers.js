@@ -62,21 +62,28 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
         map.flyTo(coordinatesZoom, actualZoom)
         
     },[])*/
-    let lat = feature.geometry.coordinates[1]+0.005
+        let lat = feature.geometry.coordinates[1]
         let lng =feature.geometry.coordinates[0]
         let coordinatesZoom = {lat, lng}
-        setZoomFlyTo(coordinatesZoom)
-        //map.flyTo(coordinatesZoom, actualZoom)
+        //setZoomFlyTo(coordinatesZoom)
+        
 
     useEffect(() => {
-        map.flyTo(coordinatesZoom, actualZoom)
+        //map.flyTo(coordinatesZoom, actualZoom)
         if (popupRef.current) {
+            console.log(popupRef.current)
             const popupInstance = popupRef.current; // Obtenemos la instancia del popup
-            popupInstance.options.autoPanPaddingTopLeft = [50, 50]; // Aplicamos autoPanPaddingTopLeft
+            popupInstance.options.autoPanPaddingTopLeft = [100, 50]; // Aplicamos autoPanPaddingTopLeft
             popupInstance.update();
+            map.flyTo(coordinatesZoom, actualZoom)
              // Actualizamos el popup con las nuevas opciones
         }
+
+        
+        
+        
     }, []);
+
     
 
     
@@ -180,12 +187,14 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
         
         if (e.target._zoom > 14){
             setZoom(true)
-        }else if(e.target._zoom > 10 && e.target._zoom < 15){
+        }
+        if(e.target._zoom > 11 && e.target._zoom < 15){
             setZoomPopup(true)
             setZoom(null)
-        }else if(e.target._zoom < 14){
+        }else if(e.target._zoom < 12){
             setZoom(null)
-            //setZoomPopup(null)
+            setZoomPopup(null)
+            
         }
     })
 
