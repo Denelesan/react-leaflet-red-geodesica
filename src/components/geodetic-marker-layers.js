@@ -6,6 +6,7 @@ import { Button, Card, Result, Table, Image } from "antd";
 import MonografiaVertice from "./monografia-vertice";
 import { isFocusable } from "@testing-library/user-event/dist/utils";
 import BooleanPointInPolygon from "@turf/boolean-point-in-polygon"
+import { click } from "@testing-library/user-event/dist/click";
 
 
 
@@ -46,14 +47,42 @@ const PopupMarker = ({feature, popupRef, isPopupVisible})=>{
     const map = useMap()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [imagenExiste, setImagenExiste] = useState(null)
-    console.log(map._zoom)
-    let lat = feature.geometry.coordinates[1]
-    let lng =feature.geometry.coordinates[0]
-    let coordinatesZoom = {lat, lng}
+    //console.log(map._zoom)
+    
     let actualZoom = map._zoom
+    const [zoomFlyTo, setZoomFlyTo] = useState(null)
+    
     //map.flyTo(coordinatesZoom, actualZoom)
-     
+    
+    /*useEffect(()=>{
+        let lat = feature.geometry.coordinates[1]+0.005
+        let lng =feature.geometry.coordinates[0]
+        let coordinatesZoom = {lat, lng}
+        setZoomFlyTo(coordinatesZoom)
+        map.flyTo(coordinatesZoom, actualZoom)
+        
+    },[])*/
+    let lat = feature.geometry.coordinates[1]+0.005
+        let lng =feature.geometry.coordinates[0]
+        let coordinatesZoom = {lat, lng}
+        setZoomFlyTo(coordinatesZoom)
+        //map.flyTo(coordinatesZoom, actualZoom)
 
+    useEffect(() => {
+        map.flyTo(coordinatesZoom, actualZoom)
+        if (popupRef.current) {
+            const popupInstance = popupRef.current; // Obtenemos la instancia del popup
+            popupInstance.options.autoPanPaddingTopLeft = [50, 50]; // Aplicamos autoPanPaddingTopLeft
+            popupInstance.update();
+             // Actualizamos el popup con las nuevas opciones
+        }
+    }, []);
+    
+
+    
+   
+    
+    
     useEffect(()=>{
         isThereFile(feature.properties.nombre_punto).then(result=>
             setImagenExiste(result))
@@ -211,11 +240,10 @@ const GeodeticMarkerLayer = ({wfsData, getComunaFilter, setDataFilter})=>{
                 position={[coordinates[1], coordinates[0]]}
                 icon={defaultIcon}
                 
-                
                 >{zoom &&
                 (<Tooltip direction={"top"} offset={[-25, 10]} permanent={true}><b>{name}</b></Tooltip>)}
                 {zoomPopup &&
-                    <Popup offset={[-10, 25]}  >
+                    <Popup ref={popupRef} offset={[-10, 25]} autoPan={true} >
                        <PopupMarker feature={feature} popupRef={popupRef} isPopupVisible={isPopupVisible}></PopupMarker>
                     </Popup>}
                 </Marker>
