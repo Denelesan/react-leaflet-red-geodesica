@@ -31,7 +31,7 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
             handleOk={showModal} 
             onCancel={hideModal}
             //height={"100vh"}
-            //width={"20%"}
+            width={"auto"}
             closable={false}
             style={{
                 padding:0
@@ -41,7 +41,7 @@ const MonografiaVertice = ({nombrePunto, visible, showModal,hideModal})=>{
             <Image
             preview={false}
             height="85vh"
-            width="100%"
+            width="50vh"
             //src={isLoadImage? imagenPunto:fallbackImage}
             src={imagenPunto}
             fallback="https://static.vecteezy.com/system/resources/previews/004/726/030/non_2x/warning-upload-error-icon-with-cloud-vector.jpg"
